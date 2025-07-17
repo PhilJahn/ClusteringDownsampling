@@ -1,5 +1,6 @@
 import argparse
 import os
+from timeit import default_timer
 
 from ConfigSpace import Configuration
 from smac import Scenario, HyperparameterOptimizationFacade
@@ -21,10 +22,12 @@ global performance_log_file
 
 def clustering_runner(config: Configuration, seed: int = 0) -> float:
     config_dict = dict(config)
+    start = default_timer()
     clustering = perform_clustering(data_points, method, config_dict, seed)
+    time = float(default_timer() - start)
     metrics = eval_clustering_supervised(clustering, labels)
     metrics |= eval_clustering_unsupervised(clustering, data_points)
-    metrics |= {"clu_num": len(np.unique(clustering)), "clu_histogram": np.unique(clustering, return_counts=True)[1].tolist()}
+    metrics |= {"clu_num": len(np.unique(clustering)), "clu_histogram": np.unique(clustering, return_counts=True)[1].tolist(), "Time": time}
     if supervised:
         score = 2 - metrics["AMI"] - metrics["ARI"]
     else:
@@ -51,7 +54,6 @@ if __name__ == '__main__':
     parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
     parser.add_argument('--budget', default=60, type=int, help='SMAC AutoML Budget (in seconds)')
     parser.add_argument('--supervised', default=1, type=int, help='Use supervised scoring')
-    parser.add_argument('--seed', default=0, type=int, help='Random Seed')
     args = parser.parse_args()
     args.supervised = args.supervised == 1
 
@@ -61,19 +63,32 @@ if __name__ == '__main__':
 
     if not os.path.exists("opt_logs"):
         os.makedirs("opt_logs")
-
+    if not os.path.exists("param_logs"):
+        os.makedirs("param_logs")
 
     if args.size == 1.0:
-        data_points, labels = load_data(args.ds)
-        performance_log_file = open(
-            f'opt_logs/log_{args.ds}_{method}_{sup_string}_full_{args.budget}.txt', 'w',
-            buffering=1)
+        parameter_log_file = open(
+                    f'param_logs/params_{args.ds}_{method}_{sup_string}_full_{args.budget}.csv', 'w',
+                    buffering=1)
     else:
-        data_points, labels = load_random_subset(args.ds, args.size, args.seed)
-        performance_log_file = open(
-            f'opt_logs/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}.txt', 'w',
+        parameter_log_file = open(
+            f'param_logs/params_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}.csv', 'w',
             buffering=1)
 
-    incumbent, score, scenario, run_num = run_parameter_estimation(args, args.seed)
-    performance_log_file.close()
+    for seed in range(5):
+        if args.size == 1.0:
+            data_points, labels = load_data(args.ds)
+            performance_log_file = open(
+                f'opt_logs/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{seed}.txt', 'w',
+                buffering=1)
+        else:
+            data_points, labels = load_random_subset(args.ds, args.size, seed)
+            performance_log_file = open(
+                f'opt_logs/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{seed}.txt', 'w',
+                buffering=1)
+
+        incumbent, score, scenario, run_num = run_parameter_estimation(args, seed)
+        parameter_log_file.write(f"{seed};{dict(incumbent)};{score};{run_num}\n")
+        performance_log_file.close()
+
 
