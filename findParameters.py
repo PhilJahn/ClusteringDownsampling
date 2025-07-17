@@ -37,9 +37,9 @@ def clustering_runner(config: Configuration, seed: int = 0) -> float:
 
 
 
-def run_parameter_estimation(args, seed):
+def run_parameter_estimation(args, seed, name):
     scenario = Scenario(get_configspace(method, args.ds, data_points), use_default_config=True,
-                        n_trials=10000000, walltime_limit=args.budget, seed=seed, name=f"{args.ds}_{method}_{args.budget}_{seed}")
+                        n_trials=10000000, walltime_limit=args.budget, seed=seed, name=name)
     smac = HyperparameterOptimizationFacade(scenario, clustering_runner, overwrite=True)
     incumbent = smac.optimize()
     score = smac.runhistory.get_min_cost(incumbent)
@@ -77,17 +77,21 @@ if __name__ == '__main__':
 
     for seed in range(5):
         if args.size == 1.0:
+            data_seed = 0
+        else:
+            data_seed = seed
+        if args.size == 1.0:
             data_points, labels = load_data(args.ds)
             performance_log_file = open(
                 f'opt_logs/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{seed}.txt', 'w',
                 buffering=1)
         else:
-            data_points, labels = load_random_subset(args.ds, args.size, seed)
+            data_points, labels = load_random_subset(args.ds, args.size, data_seed)
             performance_log_file = open(
-                f'opt_logs/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{seed}.txt', 'w',
+                f'opt_logs/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}_{seed}.txt', 'w',
                 buffering=1)
-
-        incumbent, score, scenario, run_num = run_parameter_estimation(args, seed)
+        name = f"{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}"
+        incumbent, score, scenario, run_num = run_parameter_estimation(args, seed, name)
         parameter_log_file.write(f"{seed};{dict(incumbent)};{score};{run_num}\n")
         performance_log_file.close()
 
