@@ -49,7 +49,7 @@ def run_parameter_estimation(args, seed, name):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
-    parser.add_argument('--size', default=0.5, type=float, help='Size of Dataset')
+    parser.add_argument('--size', default=0.1, type=float, help='Size of Dataset')
     parser.add_argument('--sampling', default="random", type=str, help='Downsampling Strategy')
     parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
     parser.add_argument('--budget', default=60, type=int, help='SMAC AutoML Budget (in seconds)')
@@ -66,13 +66,19 @@ if __name__ == '__main__':
     if not os.path.exists("param_logs"):
         os.makedirs("param_logs")
 
+    if not os.path.exists(f"opt_logs/{args.ds}_{method}"):
+        os.makedirs(f"opt_logs/{args.ds}_{method}")
+
+    if not os.path.exists(f"param_logs/{args.ds}_{method}"):
+        os.makedirs(f"param_logs/{args.ds}_{method}")
+
     if args.size == 1.0:
         parameter_log_file = open(
-                    f'param_logs/params_{args.ds}_{method}_{sup_string}_full_{args.budget}.csv', 'w',
+                    f'param_logs/{args.ds}_{method}/params_{args.ds}_{method}_{sup_string}_full_{args.budget}.csv', 'w',
                     buffering=1)
     else:
         parameter_log_file = open(
-            f'param_logs/params_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}.csv', 'w',
+            f'param_logs/{args.ds}_{method}/params_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}.csv', 'w',
             buffering=1)
 
     for seed in range(5):
@@ -83,12 +89,12 @@ if __name__ == '__main__':
         if args.size == 1.0:
             data_points, labels = load_data(args.ds)
             performance_log_file = open(
-                f'opt_logs/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{seed}.txt', 'w',
+                f'opt_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{seed}.txt', 'w',
                 buffering=1)
         else:
             data_points, labels = load_random_subset(args.ds, args.size, data_seed)
             performance_log_file = open(
-                f'opt_logs/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}_{seed}.txt', 'w',
+                f'opt_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}_{seed}.txt', 'w',
                 buffering=1)
         name = f"{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}"
         incumbent, score, scenario, run_num = run_parameter_estimation(args, seed, name)
