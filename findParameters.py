@@ -11,7 +11,7 @@ import numpy as np
 from clustering_handler import perform_clustering, eval_clustering_supervised, eval_clustering_unsupervised
 from configspace_handler import get_configspace
 from data_handler import load_data
-from subset_handler import load_random_subset
+from subset_handler import load_subset
 
 global method
 global supervised
@@ -48,11 +48,11 @@ def run_parameter_estimation(args, seed, name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
-    parser.add_argument('--size', default=0.1, type=float, help='Size of Dataset')
-    parser.add_argument('--sampling', default="random", type=str, help='Downsampling Strategy')
+    parser.add_argument('--ds', default="EEG Eye State", type=str, help='Dataset')
+    parser.add_argument('--size', default=0.5, type=float, help='Size of Dataset')
+    parser.add_argument('--sampling', default="kmeans", type=str, help='Downsampling Strategy')
     parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
-    parser.add_argument('--budget', default=60, type=int, help='SMAC AutoML Budget (in seconds)')
+    parser.add_argument('--budget', default=600, type=int, help='SMAC AutoML Budget (in seconds)')
     parser.add_argument('--supervised', default=1, type=int, help='Use supervised scoring')
     args = parser.parse_args()
     args.supervised = args.supervised == 1
@@ -92,7 +92,7 @@ if __name__ == '__main__':
                 f'opt_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{seed}.txt', 'w',
                 buffering=1)
         else:
-            data_points, labels = load_random_subset(args.ds, args.size, data_seed)
+            data_points, labels = load_subset(args.ds, args.size, args.sampling, data_seed)
             performance_log_file = open(
                 f'opt_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{data_seed}_{seed}.txt', 'w',
                 buffering=1)

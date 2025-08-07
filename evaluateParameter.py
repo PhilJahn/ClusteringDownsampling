@@ -6,7 +6,7 @@ import numpy as np
 
 from clustering_handler import perform_clustering, eval_clustering_supervised, eval_clustering_unsupervised
 from data_handler import load_data
-from subset_handler import load_random_subset
+from subset_handler import load_subset
 
 
 def clustering_runner(config, data_points, labels, seed: int = 0):
@@ -32,12 +32,13 @@ def param_process(params, scaling, size, evalsize):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
-    parser.add_argument('--size', default=1.0, type=float, help='Size of Dataset')
-    parser.add_argument('--evalsize', default=0.75, type=float, help='Size of Evaluation Dataset')
-    parser.add_argument('--sampling', default="random", type=str, help='Downsampling Strategy')
+    parser.add_argument('--ds', default="EEG Eye State", type=str, help='Dataset')
+    parser.add_argument('--size', default=0.5, type=float, help='Size of Dataset used for parameters')
+    parser.add_argument('--evalsize', default=1.0, type=float, help='Size of Dataset used for evaluation')
+    parser.add_argument('--sampling', default="kmeans", type=str, help='Downsampling Strategy for parameters')
+    parser.add_argument('--evalsampling', default="kmeans", type=str, help='Downsampling Strategy for evaluation')
     parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
-    parser.add_argument('--budget', default=60, type=int, help='SMAC AutoML Budget (in seconds)')
+    parser.add_argument('--budget', default=600, type=int, help='SMAC AutoML Budget (in seconds)')
     parser.add_argument('--supervised', default=1, type=int, help='Use supervised scoring')
     #options: no_scaling, sample_mult
     parser.add_argument('--scaling', default="sample_mult", type=str, help='Scaling Strategy')
@@ -80,28 +81,15 @@ if __name__ == '__main__':
         else:
             data_seeds = range(5)
 
-        if args.size == 1.0 and args.evalsize == 1.0:
-            eval_log_file = open(
-                f'eval_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_full_{args.budget}_{args.scaling}.txt',
-                'w', buffering=1)
-        elif args.evalsize == 1.0:
-            eval_log_file = open(
-                f'eval_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{args.scaling}.txt',
-                'w', buffering=1)
-        elif args.size == 1.0:
-            eval_log_file = open(
-                f'eval_logs/{args.ds}_{method}/log_{args.ds}_{args.evalsize}_{method}_{sup_string}_full_{args.budget}_{args.scaling}.txt',
-                'w', buffering=1)
-        else:
-            eval_log_file = open(
-                f'eval_logs/{args.ds}_{method}/log_{args.ds}_{args.evalsize}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{args.scaling}.txt',
-                'w', buffering=1)
+        eval_log_file = open(
+            f'eval_logs/{args.ds}_{method}/log_{args.ds}_{method}_{sup_string}_from_{args.sampling}_{args.size}_on_{args.evalsampling}_{args.evalsize}_{args.budget}_{args.scaling}.txt',
+            'w', buffering=1)
 
         for data_seed in data_seeds:
             if args.evalsize == 1.0:
                 data_points, labels = load_data(args.ds)
             else:
-                data_points, labels = load_random_subset(args.ds, args.evalsize, data_seed)
+                data_points, labels = load_subset(args.ds, args.size, args.evalsampling, data_seed)
             i = 0
             for params in params_store:
                 eval_log_file.write(f"{data_seed} {params}\n")
