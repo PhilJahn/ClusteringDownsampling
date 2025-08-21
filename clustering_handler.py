@@ -3,22 +3,48 @@ from sklearn.cluster import KMeans, DBSCAN, HDBSCAN, SpectralClustering, Agglome
 from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, silhouette_score, \
     adjusted_mutual_info_score, davies_bouldin_score, calinski_harabasz_score
 from clustpy.metrics import unsupervised_clustering_accuracy, purity
+from sklearn.neighbors import kneighbors_graph
+
 from metrics.disco import disco_score
 from datetime import datetime
 import random
 
-def perform_clustering(data, algorithm, config, seed):
-    autoencoder = None
 
-    #----Traditional Methods----
+def perform_clustering(data, algorithm, config, seed):
     if algorithm == "dbscan":
         config = {"eps": 0.5, "min_samples": 5} | config
         dbscan = DBSCAN(eps=config["eps"], min_samples=config["min_samples"])
         clustering = dbscan.fit_predict(data, None)
     elif algorithm == "kmeans":
-        config = {"init": "euclidean"} | config
+        config = {"n_clusters": 8, "init": "k-means++"} | config
         kmeans = KMeans(n_clusters=config["n_clusters"], init=config["init"], random_state=seed)
         clustering = kmeans.fit_predict(data, None)
+    elif algorithm == "spectral" or algorithm == "spectral_gamma":
+        config = {"n_clusters": 8, "gamma": 1.0, "assign_labels": 'kmeans'} | config
+        spectral = SpectralClustering(n_clusters=config["n_clusters"], gamma=config["gamma"],
+                                      assign_labels=config["assign_labels"], affinity='rbf', random_state=seed)
+        clustering = spectral.fit_predict(data, None)
+    elif algorithm == "spectral_nn":
+        config = {"n_clusters": 8, "n_neighbors": 10, "assign_labels": 'kmeans'} | config
+        spectral = SpectralClustering(n_clusters=config["n_clusters"], n_neighbors=config["n_neighbors"],
+                                      assign_labels=config["assign_labels"], affinity='nearest_neighbors',
+                                      random_state=seed)
+        clustering = spectral.fit_predict(data, None)
+    elif algorithm == "hdbscan":
+        config = {"min_cluster_size": 5, "min_samples": 5, "cluster_selection_epsilon": 0, "alpha": 1,
+                  "cluster_selection_method": "eom", "max_cluster_size": None} | config
+        hdbscan = HDBSCAN(min_cluster_size=config["min_cluster_size"], min_samples=config["min_samples"],
+                          cluster_selection_epsilon=config["cluster_selection_epsilon"],
+                          alpha=config["alpha"], cluster_selection_method=config["cluster_selection_method"],
+                          max_cluster_size=config["max_cluster_size"])
+        clustering = hdbscan.fit_predict(data, None)
+    elif algorithm == "agglomerative":
+        config = {"n_clusters": 8, "connectivity": None, "linkage": "ward"} | config
+        if config["connectivity"] == "kneighbors_graph":
+            config["connectivity"] = kneighbors_graph(data, n_neighbors=config["n_neighbors"])
+        agglomerative = AgglomerativeClustering(n_clusters=config["n_clusters"],connectivity=config["connectivity"],
+                                                linkage=config["linkage"])
+        clustering = agglomerative.fit_predict(data, None)
     else:
         raise NotImplementedError
     label_max = max(np.unique(clustering)) + 1
@@ -29,6 +55,7 @@ def perform_clustering(data, algorithm, config, seed):
 
     return clustering
 
+
 def eval_clustering_supervised(clustering, labels):
     acc = float(unsupervised_clustering_accuracy(labels, clustering))
     ari = float(adjusted_rand_score(labels, clustering))
@@ -36,6 +63,7 @@ def eval_clustering_supervised(clustering, labels):
     nmi = float(normalized_mutual_info_score(labels, clustering))
     pur = float(purity(labels, clustering))
     return {"Accuracy": acc, "ARI": ari, "AMI": ami, "NMI": nmi, "Purity": pur}
+
 
 def eval_clustering_unsupervised(clustering, data):
     try:
@@ -52,4 +80,5 @@ def eval_clustering_unsupervised(clustering, data):
         ch = -1.0
     dis5 = float(disco_score(data, clustering, min_points=5))
     dis10 = float(disco_score(data, clustering, min_points=10))
-    return {"SilhouetteScore": sil, "DaviesBouldinScore": db, "CalinskiHarabaszScore": ch, "DISCO5": dis5, "DISCO10": dis10}
+    return {"SilhouetteScore": sil, "DaviesBouldinScore": db, "CalinskiHarabaszScore": ch, "DISCO5": dis5,
+            "DISCO10": dis10}

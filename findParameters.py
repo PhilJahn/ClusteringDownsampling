@@ -3,7 +3,7 @@ import os
 from timeit import default_timer
 
 from ConfigSpace import Configuration
-from smac import Scenario, HyperparameterOptimizationFacade
+from smac import Scenario, HyperparameterOptimizationFacade, AlgorithmConfigurationFacade
 
 import util
 import numpy as np
@@ -22,25 +22,31 @@ global performance_log_file
 
 def clustering_runner(config: Configuration, seed: int = 0) -> float:
     config_dict = dict(config)
-    start = default_timer()
-    clustering = perform_clustering(data_points, method, config_dict, seed)
-    time = float(default_timer() - start)
-    metrics = eval_clustering_supervised(clustering, labels)
-    metrics |= eval_clustering_unsupervised(clustering, data_points)
-    metrics |= {"clu_num": len(np.unique(clustering)), "clu_histogram": np.unique(clustering, return_counts=True)[1].tolist(), "Time": time}
-    if supervised:
-        score = 2 - metrics["AMI"] - metrics["ARI"]
-    else:
-        score = 2 - metrics["SilhouetteScore"] - metrics["DISCO5"]
-    performance_log_file.write(f"{config_dict}, {metrics}\n")
+    score_sum = 0
+    metricss = []
+    for seed in range(5):
+        start = default_timer()
+        clustering = perform_clustering(data_points, method, config_dict, seed)
+        time = float(default_timer() - start)
+        metrics = eval_clustering_supervised(clustering, labels)
+        metrics |= eval_clustering_unsupervised(clustering, data_points)
+        metrics |= {"clu_num": len(np.unique(clustering)), "clu_histogram": np.unique(clustering, return_counts=True)[1].tolist(), "Time": time}
+        if supervised:
+            score = 2 - metrics["AMI"] - metrics["ARI"]
+        else:
+            score = 2 - metrics["SilhouetteScore"] - metrics["DISCO5"]
+        score_sum += score
+        metricss.append(metrics)
+    score = score_sum/5
+    performance_log_file.write(f"{config_dict}, {score}, {metricss}\n")
     return score
 
 
 
 def run_parameter_estimation(args, seed, name):
     scenario = Scenario(get_configspace(method, args.ds, data_points), use_default_config=True,
-                        n_trials=10000000, walltime_limit=args.budget, seed=seed, name=name)
-    smac = HyperparameterOptimizationFacade(scenario, clustering_runner, overwrite=True)
+                        n_trials=10000000, walltime_limit=args.budget, seed=seed, name=name, deterministic=True)
+    smac = AlgorithmConfigurationFacade(scenario, clustering_runner, overwrite=True)
     incumbent = smac.optimize()
     score = smac.runhistory.get_min_cost(incumbent)
     run_num = len(smac.runhistory.items())
@@ -48,8 +54,8 @@ def run_parameter_estimation(args, seed, name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="EEG Eye State", type=str, help='Dataset')
-    parser.add_argument('--size', default=0.5, type=float, help='Size of Dataset')
+    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
+    parser.add_argument('--size', default=1.0, type=float, help='Size of Dataset')
     parser.add_argument('--sampling', default="kmeans", type=str, help='Downsampling Strategy')
     parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
     parser.add_argument('--budget', default=600, type=int, help='SMAC AutoML Budget (in seconds)')
@@ -100,5 +106,6 @@ if __name__ == '__main__':
         incumbent, score, scenario, run_num = run_parameter_estimation(args, seed, name)
         parameter_log_file.write(f"{seed};{dict(incumbent)};{score};{run_num}\n")
         performance_log_file.close()
+    parameter_log_file.close()
 
 

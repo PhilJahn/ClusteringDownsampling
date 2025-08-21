@@ -29,17 +29,17 @@ def get_score(metrics, score_type, worst):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="letter", type=str, help='Dataset')
+    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
     parser.add_argument('--size', default=0.5, type=float, help='Size of Dataset')
-    parser.add_argument('--sampling', default="kcentroid", type=str, help='Downsampling Strategy')
-    parser.add_argument('--method', default="dbscan", type=str, help='Clustering Method')
+    parser.add_argument('--sampling', default="birch", type=str, help='Downsampling Strategy')
+    parser.add_argument('--method', default="hdbscan", type=str, help='Clustering Method')
     parser.add_argument('--supervised', default=1, type=int, help='Use supervised scoring')
     parser.add_argument('--param_configs', default=50, type=int, help='Number of configs per parameter')
-    parser.add_argument('--primary', default="eps", type=str, help='Primary parameter')
-    parser.add_argument('--secondary', default="min_samples", type=str, help='Secondary parameter')
+    parser.add_argument('--primary', default="min_samples", type=str, help='Primary parameter')
+    parser.add_argument('--secondary', default="alpha", type=str, help='Secondary parameter')
     parser.add_argument('--tertiary', default="", type=str, help='Tertiary parameter')
-    parser.add_argument('--primary_scale', default="", type=str, help='Primary parameter scaling')
-    parser.add_argument('--secondary_scale', default="sample_mult", type=str, help='Secondary parameter scaling')
+    parser.add_argument('--primary_scale', default="sample_mult", type=str, help='Primary parameter scaling')
+    parser.add_argument('--secondary_scale', default="", type=str, help='Secondary parameter scaling')
     parser.add_argument('--tertiary_scale', default="", type=str, help='Tertiary parameter scaling')
     args = parser.parse_args()
     args.supervised = args.supervised == 1
@@ -98,6 +98,8 @@ if __name__ == "__main__":
                     values = np.unique(np.geomspace(lower, upper, args.param_configs, dtype=int))
             else:
                 values = np.unique(np.linspace(lower, upper, args.param_configs, dtype=int))
+        elif "CategoricalHyperparameter" in str(type(param)):
+            values = param.choices
         print(default)
         param_value_dict[config_key] = values
 
