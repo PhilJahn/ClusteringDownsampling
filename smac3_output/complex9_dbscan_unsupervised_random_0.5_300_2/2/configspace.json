@@ -1,1 +1,0 @@
-{"name": null, "hyperparameters": [{"type": "uniform_float", "name": "eps", "lower": 0.0, "upper": 0.7071067811865, "default_value": 0.5, "log": false, "meta": null}, {"type": "uniform_int", "name": "min_samples", "lower": 2, "upper": 100, "default_value": 5, "log": false, "meta": null}], "conditions": [], "forbiddens": [], "python_module_version": "1.2.0", "format_version": 0.4}
