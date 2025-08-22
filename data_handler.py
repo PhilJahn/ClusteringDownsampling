@@ -1,14 +1,43 @@
+import os
+
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-
+from ucimlrepo import fetch_ucirepo
 
 def read_file(dsname):
     dic = {}
     classmember = 0
 
     try:
-        # data from https://github.com/milaan9/Clustering-Datasets/tree/master
-        file = open("./data/synthetic_milaan9" + "/" + dsname + ".arff", "r")
+        if not os.path.exists("./data/uci_download/"):
+            os.makedirs("./data/uci_download/")
+        if dsname == "shuttle": # UCI: DOI:10.24432/C5WS31, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/shuttle_label.npy"):
+                statlog_shuttle = fetch_ucirepo(id=148)
+                X = statlog_shuttle.data.features.to_numpy()
+                y = statlog_shuttle.data.targets.to_numpy()
+                np.save("./data/uci_download/shuttle_data.npy", X)
+                np.save("./data/uci_download/shuttle_label.npy", y)
+            X = np.load("./data/uci_download/shuttle_data.npy")
+            y = np.load("./data/uci_download/shuttle_label.npy")
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "adult": # UCI: DOI:10.24432/C5XW20, Barry Becker, Ronny Kohavi, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/adult_label.npy"):
+                adult = fetch_ucirepo(id=2)
+                X = adult.data.features.to_numpy()
+                y = adult.data.targets.to_numpy()
+                np.save("./data/uci_download/adult_data.npy", X)
+                np.save("./data/uci_download/adult_label.npy", y)
+            X = np.load("./data/uci_download/adult_data.npy")
+            y = np.load("./data/uci_download/adult_label.npy")
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "sensorless": # UCI: DOI:10.24432/C5VP5F, Martyna Bator, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.,  added commas for proper import
+            file = open("./data/uci/Sensorless_drive_diagnosis.txt", "r")
+        else:
+            # data from https://github.com/milaan9/Clustering-Datasets/tree/master
+            file = open("./data/synthetic_milaan9" + "/" + dsname + ".arff", "r")
     except:
         try:
             # data from https://github.com/milaan9/Clustering-Datasets/tree/master
@@ -57,3 +86,7 @@ def load_data(dsname):
     scaler.fit(data)
     data = scaler.transform(data)
     return data, labels
+
+if __name__ == "__main__":
+    X, y =load_data("sensorless")
+    print(X.shape, y.shape)
