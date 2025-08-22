@@ -53,6 +53,33 @@ def get_configspace(method, ds, data_points):
         config_space.add([agglomerative_1, agglomerative_2, agglomerative_3, agglomerative_4])
         agglomerative_cond_1 = EqualsCondition(config_space['n_neighbors'], config_space['connectivity'], "kneighbors_graph")
         config_space.add(agglomerative_cond_1)
+    elif method == "dpc":
+        dpc_1 = Constant("metric", "euclidean")
+        dpc_2 = Categorical("use_distance_threshold", [True, False], default=False)
+        dpc_3 = Float("distance_threshold", (0, (d**0.5)/2), default=0.5)
+        dpc_4 = Categorical("gaussian", [True, False], default=True)
+        dpc_5 = Categorical("use_min_rho", [True, False], default=False)
+        dpc_6 = Float("min_rho", (1, 100), default=5)
+        dpc_7 = Categorical("use_min_delta", [True, False], default=False)
+        dpc_8 = Float("min_delta", (0, (d**0.5)/2), default=0.5)
+        dpc_9 = Categorical("hard_assign", [True, False], default=False)
+        dpc_10 = Categorical("halo", [True, False], default=True)
+        dpc_11 = Categorical("halo_avg", [True, False], default=True)
+        config_space.add([dpc_1,dpc_2,dpc_3,dpc_4,dpc_5,dpc_6,dpc_7,dpc_8,dpc_9,dpc_10,dpc_11])
+        dpc_cond_1 = EqualsCondition(config_space['distance_threshold'], config_space['use_distance_threshold'], True)
+        dpc_cond_2 = EqualsCondition(config_space['min_rho'], config_space['use_min_rho'], True)
+        dpc_cond_3 = EqualsCondition(config_space['min_delta'], config_space['use_min_delta'], True)
+        dpc_cond_4 = EqualsCondition(config_space['halo_avg'], config_space['halo'], True)
+
+        config_space.add(dpc_cond_1)
+        config_space.add(dpc_cond_2)
+        config_space.add(dpc_cond_3)
+        config_space.add(dpc_cond_4)
+    elif method == "em":
+        em_1 = Integer("n_components", (1, 100), default=num_classes)
+        em_2 = Categorical("init_params", ["kmeans", "k-means++", "random", "random_from_data"], default="kmeans")
+        em_3 = Categorical("covariance_type", ["full", "tied", "diag", "spherical"], default="full")
+        config_space.add([em_1, em_2, em_3])
     else:
         raise NotImplementedError(method)
     return config_space

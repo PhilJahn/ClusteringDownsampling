@@ -3,8 +3,10 @@ from sklearn.cluster import KMeans, DBSCAN, HDBSCAN, SpectralClustering, Agglome
 from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, silhouette_score, \
     adjusted_mutual_info_score, davies_bouldin_score, calinski_harabasz_score
 from clustpy.metrics import unsupervised_clustering_accuracy, purity
+from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import kneighbors_graph
 
+from clustering.density_peak_clustering import DensityPeakClustering
 from metrics.disco import disco_score
 from datetime import datetime
 import random
@@ -45,6 +47,21 @@ def perform_clustering(data, algorithm, config, seed):
         agglomerative = AgglomerativeClustering(n_clusters=config["n_clusters"],connectivity=config["connectivity"],
                                                 linkage=config["linkage"])
         clustering = agglomerative.fit_predict(data, None)
+    elif algorithm == "dpc":
+        config = {"metric": "euclidean", "use_distance_threshold": False, "distance_threshold": None,
+                  "gaussian": True, "use_min_rho": False, "min_rho": None, "use_min_delta": False, "min_delta":None,
+                  "hard_assign": False, "halo": True, "halo_avg": True, "halo_noise": True
+                  } | config
+        print(config)
+        dpc = DensityPeakClustering(metric=config["metric"],distance_threshold=config["distance_threshold"],
+                                    gaussian=config["gaussian"],min_rho=config["min_rho"],min_delta=config["min_delta"],
+                                    hard_assign=config["hard_assign"], halo=config["halo"],halo_avg=config["halo_avg"],
+                                    halo_noise=config["halo_noise"])
+        clustering = dpc.fit_predict(data, None)
+    elif algorithm == "em":
+        config = {"n_components": 1, "init_params": "kmeans", "covariance_type": "full"} | config
+        em = GaussianMixture(n_components=config["n_components"], init_params=config["init_params"], covariance_type=config["covariance_type"])
+        clustering = em.fit_predict(data, None)
     else:
         raise NotImplementedError
     label_max = max(np.unique(clustering)) + 1
