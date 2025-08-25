@@ -1,4 +1,5 @@
 import os
+from doctest import UnexpectedException
 
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -18,8 +19,8 @@ def read_file(dsname):
                 y = statlog_shuttle.data.targets.to_numpy()
                 np.save("./data/uci_download/shuttle_data.npy", X)
                 np.save("./data/uci_download/shuttle_label.npy", y)
-            X = np.load("./data/uci_download/shuttle_data.npy")
-            y = np.load("./data/uci_download/shuttle_label.npy")
+            X = np.load("./data/uci_download/shuttle_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/shuttle_label.npy", allow_pickle=True)
             y = y.reshape(1, len(y))[0]
             return X, y
         elif dsname == "adult": # UCI: DOI:10.24432/C5XW20, Barry Becker, Ronny Kohavi, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
@@ -29,12 +30,92 @@ def read_file(dsname):
                 y = adult.data.targets.to_numpy()
                 np.save("./data/uci_download/adult_data.npy", X)
                 np.save("./data/uci_download/adult_label.npy", y)
-            X = np.load("./data/uci_download/adult_data.npy")
-            y = np.load("./data/uci_download/adult_label.npy")
+            X = np.load("./data/uci_download/adult_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/adult_label.npy", allow_pickle=True)
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "pendigits": # UCI: DOI:10.24432/C5MG6K, E. Alpaydin, Fevzi. Alimoglu, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/pendigits_label.npy"):
+                pendigits = fetch_ucirepo(id=81)
+                X = pendigits.data.features.to_numpy()
+                y = pendigits.data.targets.to_numpy()
+                np.save("./data/uci_download/pendigits_data.npy", X)
+                np.save("./data/uci_download/pendigits_label.npy", y)
+            X = np.load("./data/uci_download/pendigits_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/pendigits_label.npy", allow_pickle=True)
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "magic_gamma": # UCI: DOI:10.24432/C52C8B, R. Bock, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/magic_gamma_label.npy"):
+                magic_gamma = fetch_ucirepo(id=159)
+                X = magic_gamma.data.features.to_numpy()
+                y_name = magic_gamma.data.targets.to_numpy()
+                y_integer = []
+                for i in range(len(y_name)):
+                    if y_name[i] == "g":
+                        y_integer.append(1)
+                    elif y_name[i] == "h":
+                        y_integer.append(0)
+                    else:
+                        print(f"found {y_name[i]} label")
+                        raise UnexpectedException
+                y = np.array(y_integer)
+                np.save("./data/uci_download/magic_gamma_data.npy", X)
+                np.save("./data/uci_download/magic_gamma_label.npy", y)
+            X = np.load("./data/uci_download/magic_gamma_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/magic_gamma_label.npy", allow_pickle=True)
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "wine_quality": # UCI: DOI:10.24432/C56S3T, Paulo Cortez, A. Cerdeira, F. Almeida, T. Matos, J. Reis, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/wine_quality_label.npy"):
+                wine_quality = fetch_ucirepo(id=186)
+                X = wine_quality.data.features.to_numpy()
+                y = wine_quality.data.targets.to_numpy()
+                np.save("./data/uci_download/wine_quality_data.npy", X)
+                np.save("./data/uci_download/wine_quality_label.npy", y)
+            X = np.load("./data/uci_download/wine_quality_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/wine_quality_label.npy", allow_pickle=True)
+            y = y.reshape(1, len(y))[0]
+            return X, y
+        elif dsname == "isolet": # UCI: DOI:10.24432/C51G69, Ron Cole, Mark Fanty, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+            if not os.path.exists("./data/uci_download/isolet_label.npy"):
+                isolet = fetch_ucirepo(id=54)
+                X = isolet.data.features.to_numpy()
+                y = isolet.data.targets.to_numpy()
+                np.save("./data/uci_download/isolet_data.npy", X)
+                np.save("./data/uci_download/isolet_label.npy", y)
+            X = np.load("./data/uci_download/isolet_data.npy", allow_pickle=True)
+            y = np.load("./data/uci_download/isolet_label.npy", allow_pickle=True)
             y = y.reshape(1, len(y))[0]
             return X, y
         elif dsname == "sensorless": # UCI: DOI:10.24432/C5VP5F, Martyna Bator, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.,  added commas for proper import
             file = open("./data/uci/Sensorless_drive_diagnosis.txt", "r")
+        elif dsname == "har":
+            X = []
+            file = open("./data/uci/HAR/X_test.txt")
+            for line in file:
+                linesplit = line.split(" ")
+                x = []
+                for split in linesplit:
+                    if len(split) > 0:
+                        x.append(float(split))
+                X.append(x)
+            file = open("./data/uci/HAR/X_train.txt")
+            for line in file:
+                linesplit = line.split(" ")
+                x = []
+                for split in linesplit:
+                    if len(split) > 0:
+                        x.append(float(split))
+                X.append(x)
+            X = np.array(X)
+            #X_train = np.loadtxt("./data/uci/HAR/X_train.txt", delimiter=" ", skiprows=0, dtype=str)
+            y_test = np.loadtxt("./data/uci/HAR/y_test.txt", delimiter=" ", skiprows=0, dtype=np.int32)
+            y_train = np.loadtxt("./data/uci/HAR/y_train.txt", delimiter=" ", skiprows=0, dtype=np.int32)
+            y = y_test.tolist()
+            y.extend(y_train.tolist())
+            y = np.array(y).reshape(1, len(y))[0]
+            return X,y
         else:
             # data from https://github.com/milaan9/Clustering-Datasets/tree/master
             file = open("./data/synthetic_milaan9" + "/" + dsname + ".arff", "r")
@@ -85,8 +166,14 @@ def load_data(dsname):
     data, labels = read_file(dsname)
     scaler.fit(data)
     data = scaler.transform(data)
+    label_max = max(np.unique(labels)) + 1 # noise to separate labels
+    for i in range(len(labels)):
+        if labels[i] == -1:
+            labels[i] = label_max
+            label_max += 1
     return data, labels
 
 if __name__ == "__main__":
-    X, y =load_data("sensorless")
-    print(X.shape, y.shape)
+    X, y = load_data("isolet")
+    print(len(y), min(y), len(np.unique(y)))
+    print(X.shape)
