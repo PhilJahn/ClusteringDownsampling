@@ -2,6 +2,7 @@ import os
 from doctest import UnexpectedException
 
 import numpy as np
+from densired import datagen
 from sklearn.preprocessing import MinMaxScaler
 from ucimlrepo import fetch_ucirepo
 
@@ -116,6 +117,10 @@ def read_file(dsname):
             y.extend(y_train.tolist())
             y = np.array(y).reshape(1, len(y))[0]
             return X,y
+        elif dsname == "densired":
+            file = open("./data/synth/densired_no_noise.txt", "r")
+        elif dsname == "densired_noise":
+            file = open("./data/synth/densired_noise.txt", "r")
         else:
             # data from https://github.com/milaan9/Clustering-Datasets/tree/master
             file = open("./data/synthetic_milaan9" + "/" + dsname + ".arff", "r")
@@ -163,6 +168,33 @@ def read_file(dsname):
 
     return np.array(x), np.array(label).reshape(1, len(label))[0]
 
+def make_densired_ds():
+    if not os.path.exists(f"./data"):
+        os.makedirs(f"./data", exist_ok=True)
+    if not os.path.exists(f"./data/synth"):
+        os.makedirs(f"./data/synth", exist_ok=True)
+    densired_gen = datagen.densityDataGen(dim=50, ratio_noise = 0.1, max_retry=5, dens_factors=[1,1,0.5, 0.3, 2, 1.2, 0.9, 0.6, 1.4, 1.1], square=True,
+                   clunum= 10, seed = 6, core_num= 200, momentum=[0.5, 0.75, 0.8, 0.3, 0.5, 0.4, 0.2, 0.6, 0.45, 0.7],
+                   branch=[0,0.05, 0.1, 0, 0, 0.1, 0.02, 0, 0, 0.25],
+                   con_min_dist=0.8, verbose=True, safety=True, domain_size = 20)
+    data = densired_gen.generate_data(20000)
+    print(data.shape)
+    with open("./data/synth/densired_noise.txt", 'w') as f:
+        for x in data:
+            strx = ""
+            for xi in x:
+                strx += str(xi) + ","
+            strx = strx[:-1] + "\n"
+            f.write(strx)
+    with open("./data/synth/densired_no_noise.txt", 'w') as f:
+        for x in data:
+            if x[-1] >= 0:
+                strx = ""
+                for xi in x:
+                    strx += str(xi) + ","
+                strx = strx[:-1] + "\n"
+                f.write(strx)
+
 def load_data(dsname):
     scaler = MinMaxScaler()
     data, labels = read_file(dsname)
@@ -176,7 +208,9 @@ def load_data(dsname):
     return data, labels
 
 if __name__ == "__main__":
-    ds = "pendigits"
+    # make_densired_ds()
+    # #
+    ds = "densired_noise"
     X, y = load_data(ds)
     print(ds, len(y), min(y), len(np.unique(y)))
     print(X.shape)
