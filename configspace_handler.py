@@ -5,20 +5,41 @@ from ConfigSpace import Configuration, ConfigurationSpace, Float, Integer, Categ
     ForbiddenGreaterThanRelation, ForbiddenLessThanRelation, ForbiddenValueError, EqualsCondition
 from sklearn.neighbors import kneighbors_graph
 
+from data_handler import load_data
+from subset_handler import load_subset
+
 class_num = {}
 class_num["complex9"] = 9
 class_num["diamond9"] = 9
 class_num["letter"] = 26
 class_num["EEG Eye State"] = 2
+class_num["sensorless"] = 11
+class_num["aggregation"] = 7
+class_num["shuttle"] = 7
+class_num["har"] = 6
+class_num["magic_gamma"] = 2
+class_num["isolet"] = 26
+class_num["wine_quality"] = 7
+class_num["pendigits"] = 10
 
-def get_configspace(method, ds, data_points):
+def get_configspace(method, ds, args):
     config_space = ConfigurationSpace()
     if ds in class_num.keys():
         num_classes = class_num[ds]
     else:
         raise NotImplementedError(ds)
-    max_nn = max(((math.floor((math.log2(len(data_points))))**2) + 5), 100)
+
+    data_points, labels = load_data(args.ds)
     d = len(data_points[0])
+
+    base_1 = Constant("method", method)
+    data_1 = Constant("ds", ds)
+    data_2 = Constant("size", args.size)
+    data_3 = Constant("sampling", args.sampling)
+    data_4 = Constant("data_seed", args.data_seed)
+    base_2 = Constant("supervised", args.supervised)
+
+    config_space.add([base_1, base_2, data_1, data_2, data_3, data_4])
 
     if method == "dbscan":
         dbscan_1 = Float("eps", (0, (d**0.5)/2), default=0.5)
@@ -28,16 +49,17 @@ def get_configspace(method, ds, data_points):
         kmeans_1 = Integer("n_clusters", (1, 100), default=num_classes)
         kmeans_2 = Categorical("init", ["k-means++", "random"], default="k-means++")
         config_space.add([kmeans_1, kmeans_2])
-    elif method == "spectral" or method == "spectral_gamma":
+    elif method == "spectral":
         spectral_1 = Integer("n_clusters", (1, 100), default=num_classes)
-        spectral_2 = Float("gamma", (0, 10), default=1.0)
-        spectral_3 = Categorical("assign_labels", ["kmeans", "discretize", "cluster_qr"], default="kmeans")
-        config_space.add([spectral_1, spectral_2, spectral_3])
-    elif method == "spectral_nn":
-        spectral_1 = Integer("n_clusters", (1, 100), default=num_classes)
-        spectral_2 = Integer("n_neighbors", (1, 100), default=10)
-        spectral_3 = Categorical("assign_labels", ["kmeans", "discretize", "cluster_qr"], default="kmeans")
-        config_space.add([spectral_1, spectral_2, spectral_3])
+        spectral_2 = Categorical("affinity", ["rbf", "nearest_neighbors"], default="rbf")
+        spectral_3 = Float("gamma", (0, 10), default=1.0)
+        spectral_4 = Integer("n_neighbors", (1, 100), default=10)
+        spectral_5 = Categorical("assign_labels", ["kmeans", "discretize", "cluster_qr"], default="kmeans")
+        config_space.add([spectral_1, spectral_2, spectral_3, spectral_4, spectral_5])
+        spectral_cond_1 = EqualsCondition(config_space['gamma'], config_space['affinity'], "rbf")
+        spectral_cond_2 = EqualsCondition(config_space['n_neighbors'], config_space['affinity'], "nearest_neighbors")
+        config_space.add(spectral_cond_1)
+        config_space.add(spectral_cond_2)
     elif method == "hdbscan":
         hdbscan_1 = Integer("min_cluster_size", (1, 100), default=5)
         hdbscan_2 = Integer("min_samples", (1, 100), default=5)

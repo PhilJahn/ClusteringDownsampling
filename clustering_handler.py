@@ -21,16 +21,10 @@ def perform_clustering(data, algorithm, config, seed):
         config = {"n_clusters": 8, "init": "k-means++"} | config
         kmeans = KMeans(n_clusters=config["n_clusters"], init=config["init"], random_state=seed)
         clustering = kmeans.fit_predict(data, None)
-    elif algorithm == "spectral" or algorithm == "spectral_gamma":
-        config = {"n_clusters": 8, "gamma": 1.0, "assign_labels": 'kmeans'} | config
-        spectral = SpectralClustering(n_clusters=config["n_clusters"], gamma=config["gamma"],
-                                      assign_labels=config["assign_labels"], affinity='rbf', random_state=seed)
-        clustering = spectral.fit_predict(data, None)
-    elif algorithm == "spectral_nn":
-        config = {"n_clusters": 8, "n_neighbors": 10, "assign_labels": 'kmeans'} | config
-        spectral = SpectralClustering(n_clusters=config["n_clusters"], n_neighbors=config["n_neighbors"],
-                                      assign_labels=config["assign_labels"], affinity='nearest_neighbors',
-                                      random_state=seed)
+    elif algorithm == "spectral":
+        config = {"n_clusters": 8, "affinity":'rbf', "n_neighbors": 10, "gamma": 1.0, "assign_labels": 'kmeans'} | config
+        spectral = SpectralClustering(n_clusters=config["n_clusters"], gamma=config["gamma"], n_neighbors=config["n_neighbors"],
+                                      assign_labels=config["assign_labels"], affinity=config["affinity"], random_state=seed)
         clustering = spectral.fit_predict(data, None)
     elif algorithm == "hdbscan":
         config = {"min_cluster_size": 5, "min_samples": 5, "cluster_selection_epsilon": 0, "alpha": 1,
@@ -52,7 +46,7 @@ def perform_clustering(data, algorithm, config, seed):
                   "gaussian": True, "use_min_rho": False, "min_rho": None, "use_min_delta": False, "min_delta":None,
                   "hard_assign": False, "halo": True, "halo_avg": True, "halo_noise": True
                   } | config
-        print(config)
+        #print(config)
         dpc = DensityPeakClustering(metric=config["metric"],distance_threshold=config["distance_threshold"],
                                     gaussian=config["gaussian"],min_rho=config["min_rho"],min_delta=config["min_delta"],
                                     hard_assign=config["hard_assign"], halo=config["halo"],halo_avg=config["halo_avg"],

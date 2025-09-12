@@ -90,7 +90,7 @@ def read_file(dsname):
             return X, y
         elif dsname == "sensorless": # UCI: DOI:10.24432/C5VP5F, Martyna Bator, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.,  added commas for proper import
             file = open("./data/uci/Sensorless_drive_diagnosis.txt", "r")
-        elif dsname == "har":
+        elif dsname == "har": # UCI: DOI:10.24432/C54S4K, Jorge Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
             X = []
             file = open("./data/uci/HAR/X_test.txt")
             for line in file:
@@ -147,7 +147,7 @@ def read_file(dsname):
             else:
                 for i in range(len(j) - 1):
                     k.append(float(j[i]))
-            if (not j[len(j) - 1].startswith("noise")):
+            if (not j[len(j) - 1].startswith("noise") and not j[len(j) - 1].startswith("-1")):
                 clsname = j[len(j) - 1].rstrip()
                 if (clsname in dic.keys()):
                     label.append(dic[clsname])
@@ -159,6 +159,8 @@ def read_file(dsname):
                 label.append(-1)
             x.append(k)
 
+    file.close()
+
     return np.array(x), np.array(label).reshape(1, len(label))[0]
 
 def load_data(dsname):
@@ -166,7 +168,7 @@ def load_data(dsname):
     data, labels = read_file(dsname)
     scaler.fit(data)
     data = scaler.transform(data)
-    label_max = max(np.unique(labels)) + 1 # noise to separate labels
+    label_max = max(np.unique(labels)) + 1
     for i in range(len(labels)):
         if labels[i] == -1:
             labels[i] = label_max
@@ -174,6 +176,7 @@ def load_data(dsname):
     return data, labels
 
 if __name__ == "__main__":
-    X, y = load_data("isolet")
-    print(len(y), min(y), len(np.unique(y)))
+    ds = "pendigits"
+    X, y = load_data(ds)
+    print(ds, len(y), min(y), len(np.unique(y)))
     print(X.shape)

@@ -1,3 +1,4 @@
+import argparse
 import os
 
 import numpy as np
@@ -55,8 +56,6 @@ def kcentroid_subsampling(dataset, ratio, seed=0):
     kmeans = KMeans(n_clusters=num, random_state=seed)
 
     clustering = kmeans.fit_predict(data)
-    #print(clustering)
-
     centers = kmeans.cluster_centers_
 
     X_kcentroid_subset = centers
@@ -66,8 +65,9 @@ def kcentroid_subsampling(dataset, ratio, seed=0):
     for i in range(len(centers)):
         clustered = np.where(clustering == i)[0]
         cluster_labels = [0]*len(np.unique(labels))
+        _, mapping = np.unique(labels, return_inverse=True)
         for c_id in clustered:
-            cluster_labels[labels[c_id]] += 1
+            cluster_labels[mapping[c_id]] += 1
         cluster_label = np.argmax(cluster_labels)
         y_kcentroid_subset.append(cluster_label)
 
@@ -215,7 +215,7 @@ def protras_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
         for k in s:
             max_dist_k = 0
             max_m = -1
-            for m in pattern[k]:
+            for m in list(set(pattern[k]).intersection(set(t_n_s))):
                 dist_m = dist_matrix[k][m]
                 if dist_m > max_dist_k:
                     max_dist_k = dist_m
@@ -228,7 +228,7 @@ def protras_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
         cur_k = xmax
         s.append(cur_k)
         #print(len(s), s, pattern)
-        pattern[ymax].remove(cur_k)
+        pattern[rev_pattern[cur_k]].remove(cur_k)
         pattern[cur_k] = [cur_k]
         rev_pattern[cur_k] = cur_k
         t_n_s.remove(cur_k)
@@ -280,16 +280,15 @@ def dendis_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
                 pattern[rev_pattern[l]].remove(l)
                 pattern[cur_k].append(l)
                 rev_pattern[l] = cur_k
-        maxsize = 0
+        maxsize = -1
         maxk = -1
         for k in s:
             if len(pattern[k]) > maxsize:
                 maxsize = len(pattern[k])
                 maxk = k
-
-        max_dist_k = 0
+        max_dist_k = -1
         max_m = -1
-        for m in pattern[maxk]:
+        for m in list(set(pattern[maxk]).intersection(set(t_n_s))):
             dist_m = dist_matrix[maxk][m]
             if dist_m > max_dist_k:
                 max_dist_k = dist_m
@@ -297,7 +296,7 @@ def dendis_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
         cur_k = max_m
         s.append(cur_k)
         #print(len(s), s, pattern)
-        pattern[maxk].remove(cur_k)
+        pattern[rev_pattern[cur_k]].remove(cur_k)
         pattern[cur_k] = [cur_k]
         rev_pattern[cur_k] = cur_k
         t_n_s.remove(cur_k)
@@ -355,7 +354,7 @@ def dides_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
         for k in s:
             max_dist_k = 0
             max_m = -1
-            for m in pattern[k]:
+            for m in list(set(pattern[k]).intersection(set(t_n_s))):
                 dist_m = dist_matrix[k][m]
                 if dist_m > max_dist_k:
                     max_dist_k = dist_m
@@ -368,7 +367,7 @@ def dides_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
         cur_k = xmax
         s.append(cur_k)
         #print(len(s), s, pattern)
-        pattern[ymax].remove(cur_k)
+        pattern[rev_pattern[cur_k]].remove(cur_k)
         pattern[cur_k] = [cur_k]
         rev_pattern[cur_k] = cur_k
         t_n_s.remove(cur_k)
@@ -478,68 +477,104 @@ def load_birch_subset(dataset, ratio, seed):
 
 def load_subset(dataset, ratio, subset_type, seed=0):
     if subset_type == "random":
+        if not os.path.exists("./data/rand_subset"):
+            print("Subset not found")
+            os.mkdir("./data/rand_subset")
         return load_random_subset(dataset, ratio, seed)
     elif subset_type == "kmeans":
+        if not os.path.exists("./data/kmeans_subset"):
+            print("Subset not found")
+            os.mkdir("./data/kmeans_subset")
         return load_kmeans_subset(dataset, ratio, seed)
     elif subset_type == "kcentroid":
+        if not os.path.exists("./data/kcentroid_subset"):
+            print("Subset not found")
+            os.mkdir("./data/kcentroid_subset")
         return load_kcentroid_subset(dataset, ratio, seed)
     elif subset_type == "lwc":
+        if not os.path.exists("./data/lwc_subset"):
+            print("Subset not found")
+            os.mkdir("./data/lwc_subset")
         return load_lwc_subset(dataset, ratio, seed, "euclidean")
     elif subset_type == "protras":
+        if not os.path.exists("./data/protras_subset"):
+            print("Subset not found")
+            os.mkdir("./data/protras_subset")
         return load_protras_subset(dataset, ratio, seed, "euclidean")
     elif subset_type == "dendis":
+        if not os.path.exists("./data/dendis_subset"):
+            print("Subset not found")
+            os.mkdir("./data/dendis_subset")
         return load_dendis_subset(dataset, ratio, seed, "euclidean")
     elif subset_type == "dides":
+        if not os.path.exists("./data/dides_subset"):
+            print("Subset not found")
+            os.mkdir("./data/dides_subset")
         return load_dides_subset(dataset, ratio, seed, "euclidean")
     elif subset_type == "birch":
+        if not os.path.exists("./data/birch_subset"):
+            print("Subset not found")
+            os.mkdir("./data/birch_subset")
         return load_birch_subset(dataset, ratio, seed)
     else:
         raise NotImplementedError
 
 import matplotlib.pyplot as plt
-if __name__ == "__main__":
-    dataset_name = "complex9"
-    data, labels = load_data(dataset_name)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_full.png", bbox_inches='tight')
-    data, labels = load_random_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_random_subset.png", bbox_inches='tight')
-    data, labels = load_lwc_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_lwc_subset.png", bbox_inches='tight')
-    data, labels = load_protras_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_protras_subset.png", bbox_inches='tight')
-    data, labels = load_dendis_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_dendis_subset.png", bbox_inches='tight')
-    data, labels = load_dides_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_dides_subset.png", bbox_inches='tight')
-    data, labels = load_kmeans_subset(dataset_name, 0.5, 0)
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_kmeans_subset.png", bbox_inches='tight')
-    data, labels = load_kcentroid_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_kcentroid_subset.png", bbox_inches='tight')
-    data, labels = load_birch_subset(dataset_name, 0.5, 0)
-    print(len(labels))
-    plt.figure(figsize=(10, 10))
-    plt.scatter(data[:, 0], data[:, 1], c=labels)
-    plt.savefig(f"./data_figures/{dataset_name}_birch_subset.png", bbox_inches='tight')
+# if __name__ == "__main__":
+#     dataset_name = "shuttle"
+#     data, labels = load_data(dataset_name)
+#     print(len(labels))
+#     data, labels = load_dendis_subset(dataset_name, 0.1, 0)
+#     print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_full.png", bbox_inches='tight')
+    # data, labels = load_random_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_random_subset.png", bbox_inches='tight')
+    # data, labels = load_lwc_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_lwc_subset.png", bbox_inches='tight')
+    # data, labels = load_protras_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_protras_subset.png", bbox_inches='tight')
+    # data, labels = load_dendis_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_dendis_subset.png", bbox_inches='tight')
+    # data, labels = load_dides_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_dides_subset.png", bbox_inches='tight')
+    # data, labels = load_kmeans_subset(dataset_name, 0.5, 0)
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_kmeans_subset.png", bbox_inches='tight')
+    # data, labels = load_kcentroid_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_kcentroid_subset.png", bbox_inches='tight')
+    # data, labels = load_birch_subset(dataset_name, 0.5, 0)
+    # print(len(labels))
+    # plt.figure(figsize=(10, 10))
+    # plt.scatter(data[:, 0], data[:, 1], c=labels)
+    # plt.savefig(f"./data_figures/{dataset_name}_birch_subset.png", bbox_inches='tight')
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
+    parser.add_argument('--size', default=1.0, type=float, help='Size of Dataset')
+    parser.add_argument('--sampling', default="kmeans", type=str, help='Downsampling Strategy')
+    parser.add_argument('--data_seed', default=0, type=int, help='Seed for dataset')
+    args = parser.parse_args()
+    load_subset(args.ds, args.size, args.sampling, args.data_seed)
+    print("done")

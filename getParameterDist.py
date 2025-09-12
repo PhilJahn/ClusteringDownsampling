@@ -29,7 +29,7 @@ def get_score(metrics, score_type, worst):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
+    parser.add_argument('--ds', default="aggregation", type=str, help='Dataset')
     parser.add_argument('--size', default=0.1, type=float, help='Size of Dataset')
     parser.add_argument('--sampling', default="kcentroid", type=str, help='Downsampling Strategy')
     parser.add_argument('--method', default="dpc", type=str, help='Clustering Method')
@@ -219,5 +219,3 @@ if __name__ == "__main__":
             figname = f"param_plot/{args.ds}_{args.method}_{args.primary}_{args.primary_scale}_{args.secondary}_{args.secondary_scale}_{args.tertiary}_{args.tertiary_scale}_{tertiary_value}_{args.supervised}_{args.sampling}_{args.size}_{args.param_configs}_{data_seed}.pdf"
             plt.savefig(figname)
             #plt.show()
-
-

@@ -11,7 +11,6 @@ from numpy import sort
 from sklearn.neighbors import NearestNeighbors
 import numpy as np
 from sklearn.base import BaseEstimator, ClusterMixin
-from clustpy.utils.checks import check_parameters
 from scipy.spatial.distance import pdist, squareform
 
 
@@ -221,7 +220,6 @@ class DensityPeakClustering(ClusterMixin, BaseEstimator):
         self : DensityPeakClustering
             this instance of the Density Peak Clustering algorithm
         """
-        X, _, _ = check_parameters(X=X, y=y)
         n_clusters, labels, density_peaks, rho, delta = _density_peak_clustering(X, self.metric, self.distance_threshold,
                                                                      self.gaussian, self.min_rho, self.min_delta,
                                                                      self.hard_assign, self.halo, self.halo_noise, self.halo_avg)
