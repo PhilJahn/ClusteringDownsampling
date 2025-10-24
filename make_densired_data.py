@@ -127,10 +127,10 @@ def make_verylargethree_ds():
             f.write(strx)
 
 if __name__ == "__main__":
-    #make_densired_ds()
-    #make_scaling_ds()
-    #make_large_ds()
-    #make_verylarge_ds()
+    make_densired_ds()
+    make_scaling_ds()
+    make_large_ds()
+    make_verylarge_ds()
     make_verylargethree_ds()
     ds = "scaling1"
     X, y = load_data(ds)
@@ -142,15 +142,15 @@ if __name__ == "__main__":
     print(ds, len(y), min(y), len(np.unique(y)))
     print(X.shape)
 
-    ds = "scaling3"
-    X, y = load_data(ds)
-    print(ds, len(y), min(y), len(np.unique(y)))
-    print(X.shape)
-
-    ds = "scaling4"
-    X, y = load_data(ds)
-    print(ds, len(y), min(y), len(np.unique(y)))
-    print(X.shape)
+    # ds = "scaling3"
+    # X, y = load_data(ds)
+    # print(ds, len(y), min(y), len(np.unique(y)))
+    # print(X.shape)
+    #
+    # ds = "scaling4"
+    # X, y = load_data(ds)
+    # print(ds, len(y), min(y), len(np.unique(y)))
+    # print(X.shape)
 
     ds = "large"
     X, y = load_data(ds)
@@ -166,14 +166,3 @@ if __name__ == "__main__":
     X, y = load_data(ds)
     print(ds, len(y), min(y), len(np.unique(y)))
     print(X.shape)
-
-    clus = KMeans(n_clusters=20, random_state=0).fit_predict(X)
-    print(eval_clustering_supervised(clus, y))
-    clus = KMeans(n_clusters=22, random_state=0).fit_predict(X)
-    print(eval_clustering_supervised(clus, y))
-    clus2 = KMeans(n_clusters=25, random_state=0).fit_predict(X)
-    print(eval_clustering_supervised(clus2, y))
-    clus3 = KMeans(n_clusters=18, random_state=0).fit_predict(X)
-    print(eval_clustering_supervised(clus3, y))
-    clus3 = KMeans(n_clusters=15, random_state=0).fit_predict(X)
-    print(eval_clustering_supervised(clus3, y))
