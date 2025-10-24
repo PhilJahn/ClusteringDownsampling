@@ -62,7 +62,8 @@ def clustering_runner(config: Configuration, seed: int = 0) -> float:
                 clustering = perform_clustering(data_points, config_dict["method"], config_dict, seed)
                 time = float(default_timer() - start)
                 metrics = eval_clustering_supervised(clustering, labels)
-                metrics |= eval_clustering_unsupervised(clustering, data_points)
+                if config_dict["ds"] != "large" and config_dict["ds"] != "verylarge" and config_dict["ds"] != "verylarge3":
+                    metrics |= eval_clustering_unsupervised(clustering, data_points)
                 metrics |= {"clu_num": len(np.unique(clustering)), "clu_histogram": np.unique(clustering, return_counts=True)[1].tolist(), "Time": time}
                 if config_dict["supervised"]:
                     cur_score = 2 - metrics["AMI"] - metrics["ARI"]
@@ -70,7 +71,7 @@ def clustering_runner(config: Configuration, seed: int = 0) -> float:
                     cur_score = 2 - metrics["SilhouetteScore"] - metrics["DISCO5"]
                 score_sum += cur_score
                 metricss.append(metrics)
-            score = score_sum/5
+            score = score_sum/5 #should be 3, doesn't change result, since universally applied
     except WallTimeoutException:
         print("Timed out!", flush=True)
         score = np.inf

@@ -10,17 +10,26 @@ from subset_handler import load_subset
 
 class_num = {}
 class_num["complex9"] = 9
+class_num["complex92"] = 9
 class_num["diamond9"] = 9
 class_num["letter"] = 26
 class_num["EEG Eye State"] = 2
 class_num["sensorless"] = 11
 class_num["aggregation"] = 7
+class_num["aggregation2"] = 7
 class_num["shuttle"] = 7
 class_num["har"] = 6
 class_num["magic_gamma"] = 2
 class_num["isolet"] = 26
 class_num["wine_quality"] = 7
 class_num["pendigits"] = 10
+class_num["scaling1"] = 10
+class_num["scaling2"] = 10
+class_num["scaling3"] = 10
+class_num["scaling4"] = 10
+class_num["large"] = 10
+class_num["verylarge"] = 10
+class_num["verylarge3"] = 20
 
 def get_configspace(method, ds, args):
     config_space = ConfigurationSpace()

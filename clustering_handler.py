@@ -54,7 +54,8 @@ def perform_clustering(data, algorithm, config, seed):
         clustering = dpc.fit_predict(data, None)
     elif algorithm == "em":
         config = {"n_components": 1, "init_params": "kmeans", "covariance_type": "full"} | config
-        em = GaussianMixture(n_components=config["n_components"], init_params=config["init_params"], covariance_type=config["covariance_type"])
+        em = GaussianMixture(n_components=config["n_components"], init_params=config["init_params"], covariance_type=config["covariance_type"],
+                             random_state=seed)
         clustering = em.fit_predict(data, None)
     else:
         raise NotImplementedError
