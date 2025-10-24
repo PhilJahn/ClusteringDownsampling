@@ -2,7 +2,7 @@ import os
 from doctest import UnexpectedException
 
 import numpy as np
-from densired import datagen
+#from densired import datagen
 from sklearn.preprocessing import MinMaxScaler
 from ucimlrepo import fetch_ucirepo
 
@@ -12,7 +12,7 @@ def read_file(dsname):
 
     try:
         if not os.path.exists("./data/uci_download/"):
-            os.makedirs("./data/uci_download/")
+            os.makedis("./data/uci_download/")
         if dsname == "shuttle": # UCI: DOI:10.24432/C5WS31, licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) license.
             if not os.path.exists("./data/uci_download/shuttle_label.npy"):
                 statlog_shuttle = fetch_ucirepo(id=148)
@@ -121,6 +121,22 @@ def read_file(dsname):
             file = open("./data/synth/densired_no_noise.txt", "r")
         elif dsname == "densired_noise":
             file = open("./data/synth/densired_noise.txt", "r")
+        elif dsname == "scaling1":
+            file = open("./data/synth/scaling_test.txt", "r")
+        elif dsname == "scaling2":
+            file = open("./data/synth/scaling_double.txt", "r")
+        elif dsname == "scaling3":
+            file = open("./data/synth/scaling_test_dist.txt", "r")
+        elif dsname == "scaling4":
+            file = open("./data/synth/scaling_test_comb.txt", "r")
+        elif dsname == "large":
+            file = open("./data/synth/largedens.txt", "r")
+        elif dsname == "verylarge":
+            file = open("./data/synth/verylargedens.txt", "r")
+        elif dsname == "verylarge3":
+            file = open("./data/synth/verylargethreedens.txt", "r")
+        elif dsname == "aggregation2":
+            file = open("./data/synthetic_milaan9/aggregation2.arff", "r")
         else:
             # data from https://github.com/milaan9/Clustering-Datasets/tree/master
             file = open("./data/synthetic_milaan9" + "/" + dsname + ".arff", "r")
@@ -168,33 +184,6 @@ def read_file(dsname):
 
     return np.array(x), np.array(label).reshape(1, len(label))[0]
 
-def make_densired_ds():
-    if not os.path.exists(f"./data"):
-        os.makedirs(f"./data", exist_ok=True)
-    if not os.path.exists(f"./data/synth"):
-        os.makedirs(f"./data/synth", exist_ok=True)
-    densired_gen = datagen.densityDataGen(dim=50, ratio_noise = 0.1, max_retry=5, dens_factors=[1,1,0.5, 0.3, 2, 1.2, 0.9, 0.6, 1.4, 1.1], square=True,
-                   clunum= 10, seed = 6, core_num= 200, momentum=[0.5, 0.75, 0.8, 0.3, 0.5, 0.4, 0.2, 0.6, 0.45, 0.7],
-                   branch=[0,0.05, 0.1, 0, 0, 0.1, 0.02, 0, 0, 0.25],
-                   con_min_dist=0.8, verbose=True, safety=True, domain_size = 20)
-    data = densired_gen.generate_data(20000)
-    print(data.shape)
-    with open("./data/synth/densired_noise.txt", 'w') as f:
-        for x in data:
-            strx = ""
-            for xi in x:
-                strx += str(xi) + ","
-            strx = strx[:-1] + "\n"
-            f.write(strx)
-    with open("./data/synth/densired_no_noise.txt", 'w') as f:
-        for x in data:
-            if x[-1] >= 0:
-                strx = ""
-                for xi in x:
-                    strx += str(xi) + ","
-                strx = strx[:-1] + "\n"
-                f.write(strx)
-
 def load_data(dsname):
     scaler = MinMaxScaler()
     data, labels = read_file(dsname)
@@ -214,3 +203,5 @@ if __name__ == "__main__":
     X, y = load_data(ds)
     print(ds, len(y), min(y), len(np.unique(y)))
     print(X.shape)
+
+
