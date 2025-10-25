@@ -15,10 +15,10 @@ from subset_handler import load_subset
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
-    parser.add_argument('--size', default=2.0, type=float, help='Size of Dataset')
-    parser.add_argument('--sampling', default="protras", type=str, help='Downsampling Strategy')
+    parser.add_argument('--size', default=1.0, type=float, help='Size of Dataset')
+    parser.add_argument('--sampling', default="random", type=str, help='Downsampling Strategy')
     parser.add_argument('--method', default="em", type=str, help='Clustering Method')
-    parser.add_argument('--param_configs', default=10, type=int, help='Number of configs per parameter')
+    parser.add_argument('--param_configs', default=100, type=int, help='Number of configs per parameter')
     parser.add_argument('--primary', default="n_components", type=str, help='Primary parameter')
     parser.add_argument('--secondary', default="init_params", type=str, help='Secondary parameter')
     parser.add_argument('--tertiary', default="covariance_type", type=str, help='Tertiary parameter')
@@ -29,6 +29,10 @@ if __name__ == "__main__":
     #   em n_components init_params covariance_type
     #   spectral n_clusters gamma none
     #   spectral n_clusters n_neighbors none
+    #   spectral n_clusters gamma assign_labels_d
+    #   spectral n_clusters n_neighbors assign_labels_d
+    #   spectral n_clusters gamma assign_labels_c
+    #   spectral n_clusters n_neighbors assign_labels_c
     #   agglomerative n_clusters linkage none
     #   agglomerative n_clusters n_neighbors linkage
 
