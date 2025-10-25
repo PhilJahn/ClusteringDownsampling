@@ -151,7 +151,7 @@ if __name__ == '__main__':
     parser.add_argument('--factor', default=2.0, type=float, help='Upsampling Ratio (always 2 for paper)')
     parser.add_argument('--metric', default="unsup", type=str, help='Which metric to use for the distance (sup = supervised, unsup = unsupervised, also: sil, disco5, disco10, sup_rank, unsup_rank, imb, clu_num)')
     parser.add_argument('--rebuild', default=0, type=int, help='Rebuild log files (boolean)')
-    parser.add_argument('--method', default="em", type=str, help='Clustering Method')
+    parser.add_argument('--method', default="agglomerative", type=str, help='Clustering Method')
     parser.add_argument('--submethod', default="none", type=str, help='Subselection of method (only used for Agglomerative Linkage types)')
 
 
@@ -168,7 +168,7 @@ if __name__ == '__main__':
     submethod = args.submethod
 
     if rebuild_files:
-        for ds in ["aggregation", "aggregation2"]:
+        for ds in [up_data, reg_data]:
             kmeans_files = [f"grid_evals/{ds}_random_1.0_kmeans_n_clusters_init_none_100.txt"]
             file_parser("kmeans", kmeans_files, "grid_dicts", f"{ds}_kmeans")
 
