@@ -573,7 +573,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="complex9", type=str, help='Dataset')
     parser.add_argument('--size', default=1.0, type=float, help='Size of Dataset')
-    parser.add_argument('--sampling', default="kmeans", type=str, help='Downsampling Strategy')
+    parser.add_argument('--sampling', default="kcentroid", type=str, help='Downsampling Strategy')
     parser.add_argument('--data_seed', default=0, type=int, help='Seed for dataset')
     args = parser.parse_args()
     load_subset(args.ds, args.size, args.sampling, args.data_seed)

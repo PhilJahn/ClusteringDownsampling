@@ -144,7 +144,29 @@ def file_parser(method, files, path, name):
 
 
 if __name__ == '__main__':
-    rebuild_files = False
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--up_ds', default="aggregation2", type=str, help='Upsampled Dataset')
+    parser.add_argument('--reg_ds', default="aggregation", type=str, help='Regular Dataset')
+    parser.add_argument('--factor', default=2.0, type=float, help='Upsampling Ratio (always 2 for paper)')
+    parser.add_argument('--metric', default="unsup", type=str, help='Which metric to use (sup = supervised, unsup = unsupervised, also: sil, disco5, disco10, sup_rank, unsup_rank, imb, clu_num)')
+    parser.add_argument('--rebuild', default=0, type=int, help='Rebuild log files (boolean)')
+    parser.add_argument('--method', default="em", type=str, help='Clustering Method')
+    parser.add_argument('--submethod', default="none", type=str, help='Subselection of method (only used for Agglomerative Linkage types)')
+
+
+
+    args = parser.parse_args()
+    print(args)
+
+    up_data = args.up_ds
+    reg_data = args.reg_ds
+    factor = args.factor
+    metric = args.metric
+    rebuild_files = args.rebuild == 1
+    method = args.method
+    submethod = args.submethod
+
     if rebuild_files:
         for ds in ["aggregation", "aggregation2"]:
             kmeans_files = [f"grid_evals/{ds}_random_1.0_kmeans_n_clusters_init_none_100.txt"]
@@ -153,35 +175,26 @@ if __name__ == '__main__':
             dbscan_files = [f"grid_evals/{ds}_random_1.0_dbscan_eps_min_samples_none_100.txt"]
             file_parser("dbscan", dbscan_files, "grid_dicts", f"{ds}_dbscan")
 
-            # em_files = [f"grid_evals/{ds}_random_1.0_em_n_components_init_params_covariance_type_100.txt"]
-            # file_parser("em", em_files, "grid_dicts", f"{ds}_em")
-            #
-            # spectral_files = [f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_none_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_assign_labels_c_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_assign_labels_d_100.txt"]
-            # file_parser("spectral_gamma", spectral_files, "grid_dicts", f"{ds}_spectral_gamma")
-            #
-            # spectral_files = [f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_none_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_assign_labels_c_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_assign_labels_d_100.txt"]
-            # file_parser("spectral_nn", spectral_files, "grid_dicts", f"{ds}_spectral_nn")
-            #
-            # agg_files = [f"grid_evals/{ds}_random_1.0_agglomerative_n_clusters_n_neighbors_linkage_100.txt"]
-            # file_parser("agglomerative", agg_files, "grid_dicts", f"{ds}_agglomerative")
-            #
-            # agg_files = [f"grid_evals/{ds}_random_1.0_agglomerative_n_clusters_linkage_none_100.txt"]
-            # file_parser("agglomerative", agg_files, "grid_dicts", f"{ds}_agglomerative_unstructured")
+            em_files = [f"grid_evals/{ds}_random_1.0_em_n_components_init_params_covariance_type_100.txt"]
+            file_parser("em", em_files, "grid_dicts", f"{ds}_em")
 
+            spectral_files = [f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_none_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_assign_labels_c_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_gamma_assign_labels_d_100.txt"]
+            file_parser("spectral_gamma", spectral_files, "grid_dicts", f"{ds}_spectral_gamma")
 
+            spectral_files = [f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_none_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_assign_labels_c_100.txt", f"grid_evals/{ds}_random_1.0_spectral_n_clusters_n_neighbors_assign_labels_d_100.txt"]
+            file_parser("spectral_nn", spectral_files, "grid_dicts", f"{ds}_spectral_nn")
 
-    method = "dbscan"
-    submethod = "none"
-    metric = "sup"
-    factor = 2
+            agg_files = [f"grid_evals/{ds}_random_1.0_agglomerative_n_clusters_n_neighbors_linkage_100.txt"]
+            file_parser("agglomerative", agg_files, "grid_dicts", f"{ds}_agglomerative")
+
+            agg_files = [f"grid_evals/{ds}_random_1.0_agglomerative_n_clusters_linkage_none_100.txt"]
+            file_parser("agglomerative", agg_files, "grid_dicts", f"{ds}_agglomerative_unstructured")
 
     if method in ["agglomerative", "agglomerative_unstructured"] and submethod != "none":
         print(method, submethod, metric)
     else:
         print(method, metric)
 
-    up_data = "aggregation2"
-    reg_data = "aggregation"
 
     up_score = np.load(f"grid_dicts/{up_data}_{method}_{metric}_dict.npy", allow_pickle=True).item()
     reg_score = np.load(f"grid_dicts/{reg_data}_{method}_{metric}_dict.npy", allow_pickle=True).item()
@@ -346,6 +359,8 @@ if __name__ == '__main__':
     #print(param_choices)
     best_scaling = None
     min_score = np.inf
+    best_std = -1
+    best_diff = -1
     for scaling in scaling_options:
         diff = []
         up_performances = []
@@ -456,6 +471,8 @@ if __name__ == '__main__':
         if score < min_score:
             min_score = score
             best_scaling = scaling
+            best_diff = np.mean(diff)
+            best_std = np.std(diff)
 
         median_score = np.median(diff)
 
@@ -466,6 +483,6 @@ if __name__ == '__main__':
               f"up+: {up_ctr/len(diff):.3f}, reg+: {reg_ctr / len(diff):.3f}, same: {same_ctr / len(diff):.3f}, ",
               #f"rank: {np.mean(rank_diffs)}, ",
               f"score: {np.mean(diff) + np.std(diff):.3f}, median_score: {median_score:.3f}")
-    print(best_scaling, min_score)
+    print(best_scaling, f"${best_diff:.3f}", "\\pm", f"{best_std:.3f}$", f"{min_score:.3f}")
 
 

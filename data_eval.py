@@ -14,7 +14,7 @@ import numpy as np
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ds', default="verylarge3", type=str, help='Dataset')
+    parser.add_argument('--ds', default="letter", type=str, help='Dataset')
     args = parser.parse_args()
     print(args)
 
