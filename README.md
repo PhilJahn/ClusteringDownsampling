@@ -23,7 +23,7 @@ All datasets are referenced through their keys:
 | Complex-9 | complex9 |
 | DENSIRED | densired |
 | DENSIRED_N | densired_noise |
-| Scaling 1 | scaling1 |
+| Scaling | scaling1 |
 | Scaling 2 | scaling2 |
 | Aggregation 2 | aggregation2 |
 | Complex-9 2 | complex92 |
@@ -189,5 +189,6 @@ To facilitate the information extraction from the gathered data in order to put 
 
 * The BoP code is in ```/similarity/BoP.py``` and originally comes from the [official implementation repository](https://github.com/Klaus-Tu/Bag-of-Prototypes).
 * The DISCO code was provided by the original authors. The official GitHub repository will be linked here once it is up.
+
 
 
