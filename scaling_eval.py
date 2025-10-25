@@ -149,7 +149,7 @@ if __name__ == '__main__':
     parser.add_argument('--up_ds', default="aggregation2", type=str, help='Upsampled Dataset')
     parser.add_argument('--reg_ds', default="aggregation", type=str, help='Regular Dataset')
     parser.add_argument('--factor', default=2.0, type=float, help='Upsampling Ratio (always 2 for paper)')
-    parser.add_argument('--metric', default="unsup", type=str, help='Which metric to use (sup = supervised, unsup = unsupervised, also: sil, disco5, disco10, sup_rank, unsup_rank, imb, clu_num)')
+    parser.add_argument('--metric', default="unsup", type=str, help='Which metric to use for the distance (sup = supervised, unsup = unsupervised, also: sil, disco5, disco10, sup_rank, unsup_rank, imb, clu_num)')
     parser.add_argument('--rebuild', default=0, type=int, help='Rebuild log files (boolean)')
     parser.add_argument('--method', default="em", type=str, help='Clustering Method')
     parser.add_argument('--submethod', default="none", type=str, help='Subselection of method (only used for Agglomerative Linkage types)')
