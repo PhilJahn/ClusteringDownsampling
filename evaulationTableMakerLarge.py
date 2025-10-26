@@ -9,11 +9,8 @@ warnings.warn("runtimewarning", RuntimeWarning)
 
 def make_table(alg, supervision, samplings, scaling):
 
-    datasets = ["aggregation", "complex9", "densired", "densired_noise", "wine_quality", "isolet", "har", "pendigits", "magic_gamma", "letter"]
-    datasets_name = {"complex9": "Complex-9", "aggregation": "Aggregation", "har": "HAR",
-                     "isolet": "Isolet", "densired": "DENSIRED", "densired_noise": "DENSIRED$_{N}$",
-                     "magic_gamma": "Magic-Gamma", "wine_quality": "Wine-Quality",
-                     "pendigits": "Pendigits", "letter": "Letter"
+    datasets = ["large", "verylarge", "verylarge3"]
+    datasets_name = {"large": "Large", "verylarge": "VeryLarge", "verylarge3": "VeryLarge 3",
                      }
 
     supervision_name = {"True": "supervised score (ARI + AMI)", "False": "unsupervised score (Silhouette Coefficient + DISCO)"}
@@ -29,8 +26,8 @@ def make_table(alg, supervision, samplings, scaling):
     table += " for optimization on subset sizes generated with "
     table += sampling_name[samplings[0]]
     table += " subsampling. Scaled by 100, higher is better. Standard deviation is given. The number in brackets is the number of runs during optimization.}\n"
-    table += "\\begin{tabular}{|l|c|c|c|c|c||c|c|}\\hline\n"
-    table += "Dataset & 1\% & 10\% & 25\%& 50\% & 75\% & 100\% & 100\% (12 hours) \\\\\\hline\n"
+    table += "\\begin{tabular}{|l|c|c||c|c|}\\hline\n"
+    table += "Dataset & 1\% & 10\% & 100\% & 100\% (12 hours) \\\\\\hline\n"
 
     for dataset in datasets:
         table += datasets_name[dataset]
@@ -71,7 +68,7 @@ def make_table(alg, supervision, samplings, scaling):
                         long_score = -1
             else:
                 long_score = -1
-            for i in ["0.01", "0.1", "0.25", "0.5", "0.75", "1.0", "1.0_2"]:
+            for i in ["0.01", "0.1", "1.0", "1.0_2"]:
                 table += "& "
                 if i == "1.0_2":
                     path = f"{prefix}random_1.0_on_kcentroid_1.0_43200_sample_mult.txt"
@@ -152,27 +149,11 @@ def make_table(alg, supervision, samplings, scaling):
 
 
     table += "\\end{tabular}\n"
-    table += "\\label{tab:" + f"{alg}" + "_" + f"{supervision_string[supervision]}"  + "_" + str(scaling)
+    table += "\\label{tab:" + f"large_{alg}" + "_" + f"{supervision_string[supervision]}"  + "_" + str(scaling)
     table += "}\n\\end{center}\n\\end{table*}"
     print(table)
 
 if __name__ == '__main__':
-    #make_table("kmeans", "True", ["random"], "sample_mult")
-    #make_table("kmeans", "False", ["protras"], "sample_mult")
-    #make_table("kmeans", "False", ["protras"], "root_unsup")
+    make_table("kmeans", "True", ["random"], "sample_mult")
     print("-----")
-    #make_table("em", "True", ["random"], "sample_mult")
-    #make_table("em", "False", ["protras"], "sample_mult")
-    #make_table("em", "False", ["protras"], "root_unsup")
-    print("-----")
-    make_table("spectral", "True", ["random"], "sample_mult")
-    make_table("spectral", "False", ["protras"], "sample_mult")
-    #make_table("spectral", "False", ["protras"], "root_unsup")
-    print("-----")
-    #make_table("dbscan", "True", ["random"], "sample_mult")
-    #make_table("dbscan", "False", ["protras"], "sample_mult")
-    print("-----")
-    #make_table("agglomerative", "True", ["random"], "sample_mult")
-    #make_table("agglomerative", "False", ["protras"], "sample_mult")
-
-    print("-----")
+    make_table("em", "True", ["random"], "sample_mult")
