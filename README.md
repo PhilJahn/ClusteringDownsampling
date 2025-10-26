@@ -34,7 +34,8 @@ All datasets are referenced through their keys:
 | Magic-Gamma | magic_gamma |
 | Letter | letter |
 | Large | large |
-| VeryLarge | verylarge3 |
+| VeryLarge-2 | verylarge |
+| VeryLarge-3 | verylarge3 |
 
 (* The train data of HAR is too big for non-LFS GitHub and, as such, is stored on [Zenodo](TODO). Alternatively, the dataset can be downloaded [here](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones).)
 
@@ -178,6 +179,7 @@ Due to a bug, the scores in optimization are reported at 3/5 of their actual val
 
 To facilitate the information extraction from the gathered data in order to put it into the paper, we added several tools to automate the process.
 * ```evaluationTableMaker.py``` produces tables for the final results
+* ```evaluationTableMaker.py``` produces tables for the final results on the Large, VeryLarge-2 and VeryLarge-3 datasets
 * ```differenceTableMaker.py``` produces tables comparing two scaling functions
 * ```gridFigureMaker.py``` produces parameter grid figures in 1x4 shape (EM/Fig. 1)
 * ```gridFigureMaker2.py``` produces parameter grid figures in 2x2 shape (DBSCAN/Fig. 2)
