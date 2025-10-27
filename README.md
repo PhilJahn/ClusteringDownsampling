@@ -173,7 +173,7 @@ The scaling behaviors are bundled as follows. Hyperparameters not listed here ar
 
 Due to a bug, the scores in optimization are reported at 3/5 of their actual values. This does not affect candidate choice as it affects all scores universally, but for evaluation logs the subset optimization scores are reported lower than expected. The final scores are the actual performances of the clustering algorithms.
 
-* ```/eval_logs``` contains the evaluations of the obtained hyperparameter configurations on relevant datasets. The files are sorted into folders ```/eval_logs/dataset_clustering-algorithm``` and all files are named according to ```log_dataset_clustering-algorithm_supervision_from_downsampling-method-1_downsampling-size-1_to_downsampling-method-2_downsampling-size-2_optimization-budget_scaling-method.csv```
+* ```/eval_logs``` contains the evaluations of the obtained hyperparameter configurations on relevant datasets. The files are sorted into folders ```/eval_logs/dataset_clustering-algorithm``` and all files are named according to ```log_dataset_clustering-algorithm_supervision_from_downsampling-method-1_downsampling-size-1_to_downsampling-method-2_downsampling-size-2_optimization-budget_scaling-method.txt```
 
 ## Paper Tools
 
