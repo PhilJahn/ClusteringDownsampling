@@ -1,0 +1,9 @@
+0 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 10, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.6156321047966962;10
+1 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'densired', 'init_params': 'k-means++', 'method': 'em', 'n_components': 10, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.6101074033714757;10
+2 0;{'covariance_type': 'spherical', 'data_seed': 0, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 5, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.5515230563310174;11
+0 1;{'covariance_type': 'spherical', 'data_seed': 1, 'ds': 'densired', 'init_params': 'k-means++', 'method': 'em', 'n_components': 10, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.6203074345693462;12
+1 1;{'covariance_type': 'diag', 'data_seed': 1, 'ds': 'densired', 'init_params': 'k-means++', 'method': 'em', 'n_components': 10, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.6110974285960065;10
+2 1;{'covariance_type': 'spherical', 'data_seed': 1, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 5, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.5823553937260826;10
+0 2;{'covariance_type': 'spherical', 'data_seed': 2, 'ds': 'densired', 'init_params': 'random_from_data', 'method': 'em', 'n_components': 2, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.47870315239273975;11
+1 2;{'covariance_type': 'diag', 'data_seed': 2, 'ds': 'densired', 'init_params': 'k-means++', 'method': 'em', 'n_components': 10, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.6163167307886139;11
+2 2;{'covariance_type': 'spherical', 'data_seed': 2, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 5, 'sampling': 'kcentroid', 'size': 0.5, 'supervised': True};0.5156525202222203;9

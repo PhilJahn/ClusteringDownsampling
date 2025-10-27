@@ -1,0 +1,9 @@
+0 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.5761987335928, 'method': 'dbscan', 'min_samples': 2, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3501
+1 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.5512834240421, 'method': 'dbscan', 'min_samples': 4, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3571
+2 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.6600683220111, 'method': 'dbscan', 'min_samples': 1, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3578
+0 1;{'data_seed': 1, 'ds': 'aggregation', 'eps': 0.5, 'method': 'dbscan', 'min_samples': 5, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};inf;3584
+1 1;{'data_seed': 1, 'ds': 'aggregation', 'eps': 0.5, 'method': 'dbscan', 'min_samples': 5, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};inf;3604
+2 1;{'data_seed': 1, 'ds': 'aggregation', 'eps': 0.5, 'method': 'dbscan', 'min_samples': 5, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};inf;3594
+0 2;{'data_seed': 2, 'ds': 'aggregation', 'eps': 0.5761987335928, 'method': 'dbscan', 'min_samples': 2, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3608
+1 2;{'data_seed': 2, 'ds': 'aggregation', 'eps': 0.6985744066962, 'method': 'dbscan', 'min_samples': 2, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3642
+2 2;{'data_seed': 2, 'ds': 'aggregation', 'eps': 0.6600683220111, 'method': 'dbscan', 'min_samples': 1, 'sampling': 'lwc', 'size': 0.01, 'supervised': False};1.8;3661

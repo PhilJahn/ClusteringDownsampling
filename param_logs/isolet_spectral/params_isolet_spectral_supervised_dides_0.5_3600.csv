@@ -1,0 +1,3 @@
+0 0;{'affinity': 'rbf', 'assign_labels': 'discretize', 'data_seed': 0, 'ds': 'isolet', 'method': 'spectral', 'n_clusters': 53, 'sampling': 'dides', 'size': 0.5, 'supervised': True, 'gamma': 0.5334701782584};0.5035238990082828;4
+1 0;{'affinity': 'nearest_neighbors', 'assign_labels': 'discretize', 'data_seed': 0, 'ds': 'isolet', 'method': 'spectral', 'n_clusters': 77, 'sampling': 'dides', 'size': 0.5, 'supervised': True, 'n_neighbors': 15};0.5997667550303449;3
+2 0;{'affinity': 'rbf', 'assign_labels': 'kmeans', 'data_seed': 0, 'ds': 'isolet', 'method': 'spectral', 'n_clusters': 26, 'sampling': 'dides', 'size': 0.5, 'supervised': True, 'gamma': 1.0};0.888740700838542;2

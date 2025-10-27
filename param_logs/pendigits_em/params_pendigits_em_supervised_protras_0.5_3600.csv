@@ -1,0 +1,3 @@
+0 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'pendigits', 'init_params': 'kmeans', 'method': 'em', 'n_components': 10, 'sampling': 'protras', 'size': 0.5, 'supervised': True};0.41990424664321796;22
+1 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'pendigits', 'init_params': 'kmeans', 'method': 'em', 'n_components': 10, 'sampling': 'protras', 'size': 0.5, 'supervised': True};0.41990424664321796;22
+2 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'pendigits', 'init_params': 'kmeans', 'method': 'em', 'n_components': 10, 'sampling': 'protras', 'size': 0.5, 'supervised': True};0.41990424664321796;25

@@ -1,0 +1,3 @@
+0 0;{'connectivity': 'kneighbors_graph', 'data_seed': 0, 'ds': 'magic_gamma', 'linkage': 'average', 'method': 'agglomerative', 'n_clusters': 2, 'sampling': 'dendis', 'size': 0.1, 'supervised': False, 'n_neighbors': 5};0.40114397330306517;227
+1 0;{'connectivity': 'kneighbors_graph', 'data_seed': 0, 'ds': 'magic_gamma', 'linkage': 'single', 'method': 'agglomerative', 'n_clusters': 2, 'sampling': 'dendis', 'size': 0.1, 'supervised': False, 'n_neighbors': 28};0.40114397330306517;235
+2 0;{'connectivity': 'kneighbors_graph', 'data_seed': 0, 'ds': 'magic_gamma', 'linkage': 'average', 'method': 'agglomerative', 'n_clusters': 2, 'sampling': 'dendis', 'size': 0.1, 'supervised': False, 'n_neighbors': 6};0.40114397330306517;227

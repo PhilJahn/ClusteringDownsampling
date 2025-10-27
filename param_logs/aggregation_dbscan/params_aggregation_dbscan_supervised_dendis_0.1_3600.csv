@@ -1,0 +1,3 @@
+0 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.1040707248423, 'method': 'dbscan', 'min_samples': 1, 'sampling': 'dendis', 'size': 0.1, 'supervised': True};0.12386313382672014;2663
+1 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.1102185355519, 'method': 'dbscan', 'min_samples': 2, 'sampling': 'dendis', 'size': 0.1, 'supervised': True};0.12372174469102415;2642
+2 0;{'data_seed': 0, 'ds': 'aggregation', 'eps': 0.1096678343892, 'method': 'dbscan', 'min_samples': 1, 'sampling': 'dendis', 'size': 0.1, 'supervised': True};0.12372174469102415;2645

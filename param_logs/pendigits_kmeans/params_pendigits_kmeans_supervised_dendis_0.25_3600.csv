@@ -1,0 +1,3 @@
+0 0;{'data_seed': 0, 'ds': 'pendigits', 'init': 'random', 'method': 'kmeans', 'n_clusters': 14, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.3763413587348823;79
+1 0;{'data_seed': 0, 'ds': 'pendigits', 'init': 'random', 'method': 'kmeans', 'n_clusters': 14, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.3763413587348823;78
+2 0;{'data_seed': 0, 'ds': 'pendigits', 'init': 'random', 'method': 'kmeans', 'n_clusters': 14, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.3763413587348823;76

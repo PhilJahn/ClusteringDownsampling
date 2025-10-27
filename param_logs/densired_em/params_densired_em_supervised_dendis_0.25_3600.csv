@@ -1,0 +1,3 @@
+0 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 4, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.10577337868738461;45
+1 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'densired', 'init_params': 'random', 'method': 'em', 'n_components': 7, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.253908373800896;42
+2 0;{'covariance_type': 'tied', 'data_seed': 0, 'ds': 'densired', 'init_params': 'kmeans', 'method': 'em', 'n_components': 4, 'sampling': 'dendis', 'size': 0.25, 'supervised': True};0.2515642046845131;45

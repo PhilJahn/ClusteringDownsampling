@@ -1,0 +1,1 @@
+0 0;{'affinity': 'nearest_neighbors', 'assign_labels': 'kmeans', 'data_seed': 0, 'ds': 'aggregation', 'method': 'spectral', 'n_clusters': 7, 'performance_log': 'opt_logs/aggregation_spectral/log_aggregation_spectral_supervised_full_1200_0.txt', 'sampling': 'random', 'size': 1.0, 'supervised': True, 'n_neighbors': 29};0.015166245640662246;359

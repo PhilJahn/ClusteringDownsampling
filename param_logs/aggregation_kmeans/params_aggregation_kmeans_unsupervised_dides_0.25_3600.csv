@@ -1,0 +1,3 @@
+0 0;{'data_seed': 0, 'ds': 'aggregation', 'init': 'k-means++', 'method': 'kmeans', 'n_clusters': 3, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.6832088975131873;78
+1 0;{'data_seed': 0, 'ds': 'aggregation', 'init': 'k-means++', 'method': 'kmeans', 'n_clusters': 3, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.6832088975131873;98
+2 0;{'data_seed': 0, 'ds': 'aggregation', 'init': 'k-means++', 'method': 'kmeans', 'n_clusters': 3, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.6832088975131873;59

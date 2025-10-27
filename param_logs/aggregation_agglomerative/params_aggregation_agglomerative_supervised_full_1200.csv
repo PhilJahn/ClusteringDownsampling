@@ -1,0 +1,1 @@
+0 0;{'connectivity': 'kneighbors_graph', 'data_seed': 0, 'ds': 'aggregation', 'linkage': 'average', 'method': 'agglomerative', 'n_clusters': 7, 'performance_log': 'opt_logs/aggregation_agglomerative/log_aggregation_agglomerative_supervised_full_1200_0.txt', 'sampling': 'random', 'size': 1.0, 'supervised': True, 'n_neighbors': 61};0.0;413

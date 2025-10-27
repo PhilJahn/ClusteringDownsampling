@@ -1,0 +1,3 @@
+0 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'complex9', 'init_params': 'random_from_data', 'method': 'em', 'n_components': 2, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.8199286782199003;206
+1 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'complex9', 'init_params': 'random_from_data', 'method': 'em', 'n_components': 2, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.8199286782199003;396
+2 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'complex9', 'init_params': 'random_from_data', 'method': 'em', 'n_components': 2, 'sampling': 'dides', 'size': 0.25, 'supervised': False};0.8199286782199003;370

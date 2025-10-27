@@ -1,0 +1,3 @@
+0 0;{'covariance_type': 'spherical', 'data_seed': 0, 'ds': 'wine_quality', 'init_params': 'random', 'method': 'em', 'n_components': 3, 'sampling': 'protras', 'size': 0.5, 'supervised': False};1.0974732190550294;51
+1 0;{'covariance_type': 'diag', 'data_seed': 0, 'ds': 'wine_quality', 'init_params': 'random', 'method': 'em', 'n_components': 2, 'sampling': 'protras', 'size': 0.5, 'supervised': False};1.025719840770383;47
+2 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'wine_quality', 'init_params': 'k-means++', 'method': 'em', 'n_components': 2, 'sampling': 'protras', 'size': 0.5, 'supervised': False};1.034628580758374;47

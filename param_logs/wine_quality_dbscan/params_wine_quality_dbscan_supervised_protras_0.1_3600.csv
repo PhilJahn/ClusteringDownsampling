@@ -1,0 +1,3 @@
+0 0;{'data_seed': 0, 'ds': 'wine_quality', 'eps': 0.2413199519656, 'method': 'dbscan', 'min_samples': 62, 'sampling': 'protras', 'size': 0.1, 'supervised': True};1.1542919595720476;1367
+1 0;{'data_seed': 0, 'ds': 'wine_quality', 'eps': 0.2562525314248, 'method': 'dbscan', 'min_samples': 88, 'sampling': 'protras', 'size': 0.1, 'supervised': True};1.152394144855321;1361
+2 0;{'data_seed': 0, 'ds': 'wine_quality', 'eps': 0.252571725866, 'method': 'dbscan', 'min_samples': 85, 'sampling': 'protras', 'size': 0.1, 'supervised': True};1.151493280573759;1341

@@ -1,0 +1,1 @@
+0 0;{'affinity': 'rbf', 'assign_labels': 'discretize', 'data_seed': 0, 'ds': 'aggregation', 'method': 'spectral', 'n_clusters': 1, 'sampling': 'dendis', 'size': 0.01, 'supervised': True, 'gamma': 1.0};1.2;314

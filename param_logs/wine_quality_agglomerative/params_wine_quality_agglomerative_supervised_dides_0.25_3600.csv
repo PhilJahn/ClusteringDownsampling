@@ -1,0 +1,3 @@
+0 0;{'connectivity': None, 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'complete', 'method': 'agglomerative', 'n_clusters': 7, 'sampling': 'dides', 'size': 0.25, 'supervised': True};1.1092926102102911;268
+1 0;{'connectivity': 'kneighbors_graph', 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'ward', 'method': 'agglomerative', 'n_clusters': 5, 'sampling': 'dides', 'size': 0.25, 'supervised': True, 'n_neighbors': 18};1.1197837830475408;260
+2 0;{'connectivity': None, 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'ward', 'method': 'agglomerative', 'n_clusters': 5, 'sampling': 'dides', 'size': 0.25, 'supervised': True};1.1197837830475408;248

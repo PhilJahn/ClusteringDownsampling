@@ -1,0 +1,3 @@
+0 0;{'connectivity': None, 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'complete', 'method': 'agglomerative', 'n_clusters': 13, 'sampling': 'dides', 'size': 0.75, 'supervised': True};1.1192010173034874;23
+1 0;{'connectivity': None, 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'average', 'method': 'agglomerative', 'n_clusters': 45, 'sampling': 'dides', 'size': 0.75, 'supervised': True};1.114874974350046;45
+2 0;{'connectivity': None, 'data_seed': 0, 'ds': 'wine_quality', 'linkage': 'average', 'method': 'agglomerative', 'n_clusters': 37, 'sampling': 'dides', 'size': 0.75, 'supervised': True};1.1159906610962746;45

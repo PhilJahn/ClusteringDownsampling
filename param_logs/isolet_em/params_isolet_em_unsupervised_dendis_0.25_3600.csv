@@ -1,0 +1,3 @@
+0 0;{'covariance_type': 'spherical', 'data_seed': 0, 'ds': 'isolet', 'init_params': 'random_from_data', 'method': 'em', 'n_components': 5, 'sampling': 'dendis', 'size': 0.25, 'supervised': False};1.154425892103475;13
+1 0;{'covariance_type': 'full', 'data_seed': 0, 'ds': 'isolet', 'init_params': 'kmeans', 'method': 'em', 'n_components': 26, 'sampling': 'dendis', 'size': 0.25, 'supervised': False};1.169533996450993;20
+2 0;{'covariance_type': 'spherical', 'data_seed': 0, 'ds': 'isolet', 'init_params': 'random', 'method': 'em', 'n_components': 2, 'sampling': 'dendis', 'size': 0.25, 'supervised': False};1.0944638493045784;35
