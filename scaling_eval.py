@@ -146,8 +146,8 @@ def file_parser(method, files, path, name):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--up_ds', default="aggregation2", type=str, help='Upsampled Dataset')
-    parser.add_argument('--reg_ds', default="aggregation", type=str, help='Regular Dataset')
+    parser.add_argument('--up_ds', default="scaling2", type=str, help='Upsampled Dataset')
+    parser.add_argument('--reg_ds', default="scaling1", type=str, help='Regular Dataset')
     parser.add_argument('--factor', default=2.0, type=float, help='Upsampling Ratio (always 2 for paper)')
     parser.add_argument('--metric', default="unsup", type=str, help='Which metric to use for the distance (sup = supervised, unsup = unsupervised, also: sil, disco5, disco10, sup_rank, unsup_rank, imb, clu_num)')
     parser.add_argument('--rebuild', default=0, type=int, help='Rebuild log files (boolean)')
@@ -361,6 +361,12 @@ if __name__ == '__main__':
     min_score = np.inf
     best_std = -1
     best_diff = -1
+
+    if not os.path.exists("scale_logs"):
+        os.makedirs("scale_logs", exist_ok=True)
+    scaling_eval_path = f'scale_logs/log_{args.reg_ds}_to_{args.up_ds}_{args.method}_{args.submethod}_{args.metric}.txt'
+    eval_log_file = open(scaling_eval_path, 'w', buffering=1)
+
     for scaling in scaling_options:
         diff = []
         up_performances = []
@@ -478,11 +484,12 @@ if __name__ == '__main__':
 
 
 
-        print(f"{scaling}, diff: {np.mean(diff):.3f}, std: {np.std(diff):.3f}, tested: {len(diff)}, "
-              f"up: {np.mean(up_performances):.3f}, reg: {np.mean(reg_performances):.3f}, ",
-              f"up+: {up_ctr/len(diff):.3f}, reg+: {reg_ctr / len(diff):.3f}, same: {same_ctr / len(diff):.3f}, ",
-              #f"rank: {np.mean(rank_diffs)}, ",
-              f"score: {np.mean(diff) + np.std(diff):.3f}, median_score: {median_score:.3f}")
-    print(best_scaling, f"${best_diff:.3f}", "\\pm", f"{best_std:.3f}$", f"{min_score:.3f}")
+        eval_log_file.write(f"{scaling}, diff: {np.mean(diff):.3f}, std: {np.std(diff):.3f}, tested: {len(diff)}")
+        eval_log_file.write(f"up: {np.mean(up_performances):.3f}, reg: {np.mean(reg_performances):.3f}, ")
+        eval_log_file.write(f"up+: {up_ctr/len(diff):.3f}, reg+: {reg_ctr / len(diff):.3f}, same: {same_ctr / len(diff):.3f}, ")
+        eval_log_file.write(f"score: {np.mean(diff) + np.std(diff):.3f}, median_score: {median_score:.3f}\n")
+    eval_log_file.write(f"{best_scaling} ${best_diff:.3f} \\pm {best_std:.3f}$ {min_score:.3f}")
+    eval_log_file.close()
+
 
 
