@@ -37,7 +37,7 @@ All datasets are referenced through their keys:
 | VeryLarge-2 | verylarge |
 | VeryLarge-3 | verylarge3 |
 
-(* The train data of HAR is too big for non-LFS GitHub and, as such, is stored on [Zenodo](TODO). Alternatively, the dataset can be downloaded [here](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones).)
+(* The train data of HAR is too big for non-LFS GitHub and, as such, is stored on [Zenodo](https://zenodo.org/records/17456047). Alternatively, the dataset can be downloaded [here](https://archive.ics.uci.edu/dataset/240/human+activity+recognition+using+smartphones).)
 
 ## Downsampling
 
@@ -94,7 +94,7 @@ Clustering methods follow this naming scheme. All use their  [Scikit-Learn](http
 | Agglomerative | agglomerative |
 
 (Additional clustering strategies, HDBSCAN (also Scikit-Learn) and DPC (self-implemented), are implemented, but were not used in the paper)
-* ```/opt_logs/``` contains the logged information on all tested configurations during optimization. The log files are sorted into folders ```/opt_logs/dataset_clustering-algorithm/``` and all files are named like this: ```log_dataset_clustering-algorithm_supervision_downsampling-method_downsampling-size_optimization-budget_data-seed_smac-seed.txt```. As this folder is very large, it is stored on [Zenodo](TODO), rather than on GitHub.
+* ```/opt_logs/``` contains the logged information on all tested configurations during optimization. The log files are sorted into folders ```/opt_logs/dataset_clustering-algorithm/``` and all files are named like this: ```log_dataset_clustering-algorithm_supervision_downsampling-method_downsampling-size_optimization-budget_data-seed_smac-seed.txt```. As this folder is very large, it is stored on [Zenodo](https://zenodo.org/records/17456047), rather than on GitHub.
 * ```/param_logs/``` contains the information on the final configurations obtained from optimization. The files are sorted into folders ```/param_logs/dataset_clustering-algorithm``` and all files are named like this: ```log_dataset_clustering-algorithm_supervision_downsampling-method_downsampling-size_optimization-budget.csv```.
 
 The configuration spaces for this are handled through ```config_handler.py```. If a new dataset is added, it needs to receive an entry in the ```class_num```-dictionary to function (as downsampled datasets may drop class labels, but the default hyperparameters should stay the same).
