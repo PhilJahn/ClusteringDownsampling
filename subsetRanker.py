@@ -11,7 +11,9 @@ warnings.warn("runtimewarning", RuntimeWarning)
 
 from pprint import pprint
 
-def rank_subsets(alg, supervision):
+# gives rank per subsampling method for all methods for specific algorithm and supervision based on eval_logs
+# missing results are ranked last if skip_not_found is False, else the dataset subset sizes that have a missing value are skipped
+def rank_subsets(alg, supervision, skip_not_found=False):
 
     datasets = ["complex9", "aggregation", "densired", "densired_noise", "har", "isolet", "magic_gamma", "wine_quality", "pendigits"]
     datasets_name = {"complex9": "Complex-9", "aggregation": "Aggregation", "har": "HAR",
@@ -31,6 +33,7 @@ def rank_subsets(alg, supervision):
     rank_per_sample = {}
 
     for dataset in datasets:
+        not_found = False
         for i in ["0.01", "0.1", "0.25", "0.5", "0.75"]:
             prefix = f"eval_logs/{dataset}_{alg}/log_{dataset}_{alg}_{supervision_string[supervision]}_from_"
             postfix = f"_on_kcentroid_1.0_3600_sample_mult.txt"
@@ -47,19 +50,26 @@ def rank_subsets(alg, supervision):
                             scoringsplit = scoring.split(" ")
                             if scoringsplit[-4].replace('e','',1).replace('.','',1).replace('-','',2).isnumeric():
                                 subscore = round((2-float(scoringsplit[-4]))*100)
+                            else:
+                                not_found = True
+                        else:
+                            not_found = True
+                else:
+                    not_found = True
                 scores[key] = subscore
                 subscores.append(subscore)
-            sorted_subscores = np.sort(subscores)
-            ranking = []
-            for j in range(len(subscores)):
-                ranking.append(6-np.max(np.where(sorted_subscores == subscores[j])))
-            #print(ranking, subscores)
-            rank_per_sample[f"{dataset}_{i}"] = ranking
+            if not not_found or not skip_not_found:
+                sorted_subscores = np.sort(subscores)
+                ranking = []
+                for j in range(len(subscores)):
+                    ranking.append(6-np.max(np.where(sorted_subscores == subscores[j])))
+                #print(ranking, subscores)
+                rank_per_sample[f"{dataset}_{i}"] = ranking
     #overall_ranking = np.sum(rank_per_sample.values(), axis=0)
     #print(np.sum(list(rank_per_sample.values()), axis=0)/len(list(rank_per_sample.keys())))
     return rank_per_sample
 
-
+# gives ranking of subsampling strategies
 if __name__ == '__main__':
     all_rankings = []
     part_rankings = []

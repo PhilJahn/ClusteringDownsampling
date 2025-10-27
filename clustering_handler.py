@@ -11,7 +11,7 @@ from metrics.disco import disco_score
 from datetime import datetime
 import random
 
-
+# runs the actual clustering and returns the clustering result
 def perform_clustering(data, algorithm, config, seed):
     if algorithm == "dbscan":
         config = {"eps": 0.5, "min_samples": 5} | config

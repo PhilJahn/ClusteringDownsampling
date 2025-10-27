@@ -8,6 +8,7 @@ from sklearn.neighbors import kneighbors_graph
 from data_handler import load_data
 from subset_handler import load_subset
 
+# number of ground truth classes/clusters, mandatory for new datasets
 class_num = {}
 class_num["complex9"] = 9
 class_num["complex92"] = 9
@@ -31,6 +32,7 @@ class_num["large"] = 10
 class_num["verylarge"] = 10
 class_num["verylarge3"] = 20
 
+# returns configuration space to use during optimization
 def get_configspace(method, ds, args):
     config_space = ConfigurationSpace()
     if ds in class_num.keys():

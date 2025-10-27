@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 
 from scaling_eval import file_parser
 
+# makes 2x2 hyperparameter grid figure (i.e. DBSCAN)
 if __name__ == "__main__":
     if not os.path.exists("grid_figures"):
         os.makedirs("grid_figures")

@@ -12,7 +12,7 @@ from configspace_handler import get_configspace
 from data_handler import load_data
 from subset_handler import load_subset
 
-
+# original grid search, kept for legacy reasons, now made obsolete by evaluateParameterGrid.py
 def get_score(metrics, score_type, worst):
     if score_type=="supervised":
         if worst:

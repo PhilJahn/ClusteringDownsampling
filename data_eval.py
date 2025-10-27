@@ -12,6 +12,7 @@ from similarity.imbalance_degree import imbalance_degree
 from subset_handler import load_subset
 import numpy as np
 
+# computes and stores dataset properties in data_eval
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="letter", type=str, help='Dataset')

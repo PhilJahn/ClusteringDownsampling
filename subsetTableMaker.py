@@ -11,11 +11,12 @@ warnings.warn("deprecated", DeprecationWarning)
 warnings.warn("userwarning", UserWarning)
 warnings.warn("runtimewarning", RuntimeWarning)
 
-
-
+# makes table for the subset properties
 def make_sub_table():
+    # datasets that have actual values for this
     dss = ["aggregation", "complex9", "densired", "densired_noise", "wine_quality", "isolet", "har", "pendigits",
            "magic_gamma", "letter"]
+    # datasets used in paper for table
     dss = ["complex9", "densired", "isolet", "pendigits"]
     samplings = ["random", "lwc", "kcentroid", "protras", "dendis", "dides"]
     datasets_name = {"complex9": "Complex-9", "aggregation": "Aggregation", "har": "HAR",
@@ -184,5 +185,6 @@ def make_sub_table():
     print(table_unsup)
     #print(table_imb)
 
+# prints the tables containing subset metrics to console
 if __name__ == "__main__":
     make_sub_table()

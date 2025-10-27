@@ -1,3 +1,5 @@
+# Original implementation from DISCO code obtained from original authors
+
 # Implementation of the dc-distance with a DCTree by
 # - Author: us
 # - Source: this repo

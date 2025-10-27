@@ -9,7 +9,7 @@ from clustering_handler import perform_clustering, eval_clustering_supervised, e
 from data_handler import load_data
 from subset_handler import load_subset
 
-
+# runs clustering with a given configuration
 def clustering_runner(config, data_points, labels, seed: int = 0):
     config_dict = dict(config)
     start = default_timer()
@@ -24,7 +24,8 @@ def clustering_runner(config, data_points, labels, seed: int = 0):
         metrics["unsup_score"] = 2 - metrics["SilhouetteScore"] - metrics["DISCO5"]
     return metrics
 
-
+# processes hyperparameter values based on scaling function
+# prior knowledge of scaling functions baked in to make examinations easier (i.e. only applies scaling to hyperparameters wherescaling behavior was found)
 def param_process(params, scaling, size, evalsize):
     scale = evalsize/size
     if scaling == "sample_mult":
@@ -62,7 +63,7 @@ def param_process(params, scaling, size, evalsize):
     return params
 
 
-
+# evaluates hyperparameter configurations on different (or same) dataset size
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="aggregation", type=str, help='Dataset')

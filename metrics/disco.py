@@ -1,3 +1,5 @@
+# Original implementation of DISCO obtained from original authors
+
 """Evaluation metric DISCO."""
 
 # Implementation of DISCO by

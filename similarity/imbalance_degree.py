@@ -1,12 +1,13 @@
 import numpy as np
 
-
+# histogram to use for comparison with balanced distribution
 def imbalance_degree_histogram(hist):
     labels = []
     for i in range(len(hist)):
         labels.extend([i]*hist[i])
     return imbalance_degree(labels)
 
+# reimplementation from Measuring the class-imbalance extent of multi-class problems
 def imbalance_degree(labels):
 
     uniq, counts = np.unique(labels, return_counts=True)

@@ -6,6 +6,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from ucimlrepo import fetch_ucirepo
 
+# reads files
 def read_file(dsname):
     dic = {}
     classmember = 0
@@ -184,6 +185,7 @@ def read_file(dsname):
 
     return np.array(x), np.array(label).reshape(1, len(label))[0]
 
+# loads data, applies MinMaxScaler and splits noise
 def load_data(dsname):
     scaler = MinMaxScaler()
     data, labels = read_file(dsname)

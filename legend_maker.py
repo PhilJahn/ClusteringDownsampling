@@ -2,6 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 
+# makes the legend for figures
 if __name__ == "__main__":
     if not os.path.exists("grid_figures"):
         os.makedirs("grid_figures")

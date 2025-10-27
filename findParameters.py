@@ -16,8 +16,6 @@ import numpy as np
 from clustering_handler import perform_clustering, eval_clustering_supervised, eval_clustering_unsupervised
 from configspace_handler import get_configspace
 from data_handler import load_data
-from smac_custom.algorithm_configuration_facade_custom import AlgorithmConfigurationFacadeCustom
-from smac_custom.target_data_runner import TargetFunctionDataRunner
 from subset_handler import load_subset
 
 global data_points
@@ -34,6 +32,7 @@ warnings.warn("deprecated", DeprecationWarning)
 warnings.warn("userwarning", UserWarning)
 warnings.warn("runtimewarning", RuntimeWarning)
 
+# strictly enforces time limit, only works on Linux
 @contextmanager
 def time_limit(seconds):
     def signal_handler(signum, frame):
@@ -47,7 +46,7 @@ def time_limit(seconds):
         #print("I was here as well", flush=True)
         signal.alarm(0)
 
-
+# handles a single run
 def clustering_runner(config: Configuration, seed: int = 0) -> float:
     config_dict = dict(config)
     score_sum = 0
@@ -57,7 +56,7 @@ def clustering_runner(config: Configuration, seed: int = 0) -> float:
     print("remaining time:", remaining_time, "seconds")
     try:
         with time_limit(remaining_time):
-            for seed in range(3): # take average of 3
+            for seed in range(3): # take average of 3 seeds for clustering algorithm
                 start = default_timer()
                 clustering = perform_clustering(data_points, config_dict["method"], config_dict, seed)
                 time = float(default_timer() - start)
@@ -85,6 +84,7 @@ def clustering_runner(config: Configuration, seed: int = 0) -> float:
             performance_log_file.write(f"-\t{config_dict}: {metrics}\n")
     return score
 
+# performs search for suitable hyperparameter configuration
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="aggregation", type=str, help='Dataset')
@@ -176,6 +176,7 @@ if __name__ == '__main__':
             name = f"{args.ds}_{method}_{sup_string}_{args.sampling}_{args.size}_{args.budget}_{args.data_seed}"
             scenario = Scenario(get_configspace(args.method, args.ds, args), use_default_config=True,
                                 n_trials=10000000, walltime_limit=args.budget, seed=args.smac_seed, name=name, deterministic=True)
+            # uses AlgorithmConfigurationFacade as it starts with default values, HPO is special case of AC, so appropriate. Initially used HPO Facade, but early tests showed insufficient exploration for clustering (e.g., AC consistently found best DBSCAN configuration on Complex-9, while HPO Facade did not)
             smac = AlgorithmConfigurationFacade(scenario, clustering_runner, overwrite=True)
             incumbent = smac.optimize()
             score = smac.runhistory.get_min_cost(incumbent)

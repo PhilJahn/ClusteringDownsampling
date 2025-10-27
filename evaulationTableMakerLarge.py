@@ -6,7 +6,7 @@ warnings.warn("deprecated", DeprecationWarning)
 warnings.warn("userwarning", UserWarning)
 warnings.warn("runtimewarning", RuntimeWarning)
 
-
+# make Table for Large / VeryLarge datasets (fewer sizes)
 def make_table(alg, supervision, samplings, scaling):
 
     datasets = ["large", "verylarge", "verylarge3"]
@@ -153,6 +153,7 @@ def make_table(alg, supervision, samplings, scaling):
     table += "}\n\\end{center}\n\\end{table*}"
     print(table)
 
+# prints table contents for table for Large / VeryLarge datasets
 if __name__ == '__main__':
     make_table("kmeans", "True", ["random"], "sample_mult")
     print("-----")

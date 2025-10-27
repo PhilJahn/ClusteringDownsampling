@@ -6,7 +6,7 @@ warnings.warn("deprecated", DeprecationWarning)
 warnings.warn("userwarning", UserWarning)
 warnings.warn("runtimewarning", RuntimeWarning)
 
-
+# makes table for clustering algorithms given supervision state, sampling method and scaling approach
 def make_table(alg, supervision, samplings, scaling):
 
     datasets = ["aggregation", "complex9", "densired", "densired_noise", "wine_quality", "isolet", "har", "pendigits", "magic_gamma", "letter"]
@@ -156,6 +156,7 @@ def make_table(alg, supervision, samplings, scaling):
     table += "}\n\\end{center}\n\\end{table*}"
     print(table)
 
+# prints tables for evaluations to console, only content is used, headers were reused from prior state and not upated here
 if __name__ == '__main__':
     make_table("kmeans", "True", ["random"], "sample_mult")
     make_table("kmeans", "False", ["protras"], "sample_mult")

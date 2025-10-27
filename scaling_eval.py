@@ -9,7 +9,7 @@ from sortedcontainers import SortedSet
 
 from similarity.imbalance_degree import imbalance_degree_histogram
 
-
+# parses grid_evals into grid_dicts
 def file_parser(method, files, path, name):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
@@ -142,7 +142,7 @@ def file_parser(method, files, path, name):
     np.save(f"{path}/{name}_sup_rank_dict.npy", rank_sup_dict)
     np.save(f"{path}/{name}_unsup_rank_dict.npy", rank_unsup_dict)
 
-
+# gives scaling behavior for requested settings
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -166,7 +166,7 @@ if __name__ == '__main__':
     rebuild_files = args.rebuild == 1
     method = args.method
     submethod = args.submethod
-
+    # rebuilding grid eval logs in case of new grid results
     if rebuild_files:
         for ds in [up_data, reg_data]:
             kmeans_files = [f"grid_evals/{ds}_random_1.0_kmeans_n_clusters_init_none_100.txt"]
@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
     up_score = np.load(f"grid_dicts/{up_data}_{method}_{metric}_dict.npy", allow_pickle=True).item()
     reg_score = np.load(f"grid_dicts/{reg_data}_{method}_{metric}_dict.npy", allow_pickle=True).item()
-
+    # specifies scaling behaviors for methods, none for categorical, all four functions for int/float
     params = []
     if method == "dbscan":
         params = ["eps", "min_samples"]

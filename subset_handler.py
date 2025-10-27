@@ -8,6 +8,7 @@ from sklearn.metrics.pairwise import distance_metrics
 
 from data_handler import load_data
 
+# handles subsets, generally: if it doesn't exist yet, it gets made and loaded, otherwise it only gets loaded
 
 def random_subsampling(dataset, ratio, seed=0):
     data, labels = load_data(dataset)
@@ -21,7 +22,7 @@ def random_subsampling(dataset, ratio, seed=0):
     np.save(f"./data/rand_subset/data_{dataset}_random_{ratio}_{seed}.npy", X_rand_subset)
     np.save(f"./data/rand_subset/labels_{dataset}_random_{ratio}_{seed}.npy", y_rand_subset)
 
-
+# Select random point within k-Means cluster, unused
 def kmeans_subsampling(dataset, ratio, seed=0):
     data, labels = load_data(dataset)
     num = round(len(labels) * ratio)
@@ -50,6 +51,7 @@ def kmeans_subsampling(dataset, ratio, seed=0):
     np.save(f"./data/kmeans_subset/data_{dataset}_kmeans_{ratio}_{seed}.npy", X_kmeans_subset)
     np.save(f"./data/kmeans_subset/labels_{dataset}_kmeans_{ratio}_{seed}.npy", y_kmeans_subset)
 
+# Saves centroid for k-Means clusters
 def kcentroid_subsampling(dataset, ratio, seed=0):
     data, labels = load_data(dataset)
     num = round(len(labels) * ratio)
@@ -79,7 +81,7 @@ def kcentroid_subsampling(dataset, ratio, seed=0):
     np.save(f"./data/kcentroid_subset/data_{dataset}_kcentroid_{ratio}_{seed}.npy", X_kcentroid_subset)
     np.save(f"./data/kcentroid_subset/labels_{dataset}_kcentroid_{ratio}_{seed}.npy", y_kcentroid_subset)
 
-# from Scalable k-Means Clustering via Lightweight Coresets
+# reimplemented from Scalable k-Means Clustering via Lightweight Coresets
 def lwc_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     data, labels = load_data(dataset)
     mu = np.mean(data, axis=0).reshape(1, -1)
@@ -105,7 +107,7 @@ def lwc_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     np.save(f"./data/lwc_subset/data_{dataset}_lwc_{distance_function}_{ratio}_{seed}.npy", X_lwc_subset)
     np.save(f"./data/lwc_subset/labels_{dataset}_lwc_{distance_function}_{ratio}_{seed}.npy", y_lwc_subset)
 
-# from ProTraS: A probabilistic traversing sampling algorithm, altered to use ratio rather than epsilon for consistency with other methods
+# reimplemented from ProTraS: A probabilistic traversing sampling algorithm, altered to use ratio rather than epsilon for consistency with other methods, old version, unused
 def protras_subsampling_old(dataset, ratio, seed=0, distance_function="euclidean"):
     data, labels = load_data(dataset)
     distance_metric = distance_metrics()[distance_function]
@@ -170,6 +172,7 @@ def protras_subsampling_old(dataset, ratio, seed=0, distance_function="euclidean
     np.save(f"./data/protras_subset/data_{dataset}_protras_{distance_function}_{ratio}_{seed}.npy", X_protras_subset)
     np.save(f"./data/protras_subset/labels_{dataset}_protras_{distance_function}_{ratio}_{seed}.npy", y_protras_subset)
 
+# better reimplementation from ProTraS: A probabilistic traversing sampling algorithm, altered to use ratio rather than epsilon for consistency with other methods
 def protras_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     data, labels = load_data(dataset)
     distance_metric = distance_metrics()[distance_function]
@@ -241,6 +244,7 @@ def protras_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     np.save(f"./data/protras_subset/data_{dataset}_protras_{distance_function}_{ratio}_{seed}.npy", X_protras_subset)
     np.save(f"./data/protras_subset/labels_{dataset}_protras_{distance_function}_{ratio}_{seed}.npy", y_protras_subset)
 
+# reimplemntation from DENDIS: A new density-based sampling for clustering algorithm, altered to use ratio rather than epsilon for consistency with other methods, also made deterministic with setting from ProTraS
 def dendis_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     data, labels = load_data(dataset)
     distance_metric = distance_metrics()[distance_function]
@@ -309,6 +313,7 @@ def dendis_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     np.save(f"./data/dendis_subset/data_{dataset}_dendis_{distance_function}_{ratio}_{seed}.npy", X_dendis_subset)
     np.save(f"./data/dendis_subset/labels_{dataset}_dendis_{distance_function}_{ratio}_{seed}.npy", y_dendis_subset)
 
+# reimplemntation from DIDES: a fast and effective sampling for clustering algorithm, altered to use ratio rather than epsilon for consistency with other methods, also made deterministic with setting from ProTraS
 def dides_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     data, labels = load_data(dataset)
     distance_metric = distance_metrics()[distance_function]
@@ -380,6 +385,7 @@ def dides_subsampling(dataset, ratio, seed=0, distance_function="euclidean"):
     np.save(f"./data/dides_subset/data_{dataset}_dides_{distance_function}_{ratio}_{seed}.npy", X_dides_subset)
     np.save(f"./data/dides_subset/labels_{dataset}_dides_{distance_function}_{ratio}_{seed}.npy", y_dides_subset)
 
+# reimplementation from BIRCHSCAN: A sampling method for applying DBSCAN to large datasets, unused
 def birch_subsampling(dataset, ratio, seed):
     data, labels = load_data(dataset)
     num = round(len(labels) * ratio)
@@ -407,8 +413,7 @@ def birch_subsampling(dataset, ratio, seed):
     np.save(f"./data/birch_subset/data_{dataset}_birch_{ratio}_{seed}.npy", X_birch_subset)
     np.save(f"./data/birch_subset/labels_{dataset}_birch_{ratio}_{seed}.npy", y_birch_subset)
 
-
-
+# loaders, prompt creation of subsets if not already present on disk
 def load_random_subset(dataset, ratio, seed=0):
     if not os.path.exists(f"./data/rand_subset/data_{dataset}_random_{ratio}_{seed}.npy"):
         random_subsampling(dataset, ratio, seed)
@@ -519,56 +524,7 @@ def load_subset(dataset, ratio, subset_type, seed=0):
     else:
         raise NotImplementedError
 
-import matplotlib.pyplot as plt
-# if __name__ == "__main__":
-#     dataset_name = "shuttle"
-#     data, labels = load_data(dataset_name)
-#     print(len(labels))
-#     data, labels = load_dendis_subset(dataset_name, 0.1, 0)
-#     print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_full.png", bbox_inches='tight')
-    # data, labels = load_random_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_random_subset.png", bbox_inches='tight')
-    # data, labels = load_lwc_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_lwc_subset.png", bbox_inches='tight')
-    # data, labels = load_protras_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_protras_subset.png", bbox_inches='tight')
-    # data, labels = load_dendis_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_dendis_subset.png", bbox_inches='tight')
-    # data, labels = load_dides_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_dides_subset.png", bbox_inches='tight')
-    # data, labels = load_kmeans_subset(dataset_name, 0.5, 0)
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_kmeans_subset.png", bbox_inches='tight')
-    # data, labels = load_kcentroid_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_kcentroid_subset.png", bbox_inches='tight')
-    # data, labels = load_birch_subset(dataset_name, 0.5, 0)
-    # print(len(labels))
-    # plt.figure(figsize=(10, 10))
-    # plt.scatter(data[:, 0], data[:, 1], c=labels)
-    # plt.savefig(f"./data_figures/{dataset_name}_birch_subset.png", bbox_inches='tight')
-
+# generates and loads subset
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="complex9", type=str, help='Dataset')

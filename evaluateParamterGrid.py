@@ -12,6 +12,7 @@ import numpy as np
 
 from subset_handler import load_subset
 
+# perform grid search on dataset and saves results in grid_evals
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--ds', default="complex9", type=str, help='Dataset')

@@ -9,7 +9,7 @@ warnings.warn("deprecated", DeprecationWarning)
 warnings.warn("userwarning", UserWarning)
 warnings.warn("runtimewarning", RuntimeWarning)
 
-
+# makes table for difference in performance between two scaling functions for the same clustering method
 def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
 #scaling1 - scaling2
     datasets = ["aggregation", "complex9", "densired", "densired_noise", "wine_quality", "isolet", "har", "pendigits", "magic_gamma", "letter"]
@@ -126,6 +126,7 @@ def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
     table += "}\n\\end{center}\n\\end{table}"
     print(table)
 
+# prints the tables denoting the differences in performance between two scaling functions to command line, first-second
 if __name__ == '__main__':
     make_diff_table("kmeans", "False", ["protras"], "root_unsup", "sample_mult")
     #make_diff_table("em", "False", ["protras"], "root_unsup", "sample_mult")

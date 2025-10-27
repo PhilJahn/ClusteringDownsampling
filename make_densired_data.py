@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 from clustering_handler import eval_clustering_supervised
 from data_handler import load_data
 
-
+# makes DENSIRED and DENSIRED_Noise
 def make_densired_ds():
     if not os.path.exists(f"./data"):
         os.makedirs(f"./data", exist_ok=True)
@@ -36,6 +36,7 @@ def make_densired_ds():
                 strx = strx[:-1] + "\n"
                 f.write(strx)
 
+# makes Scaling (and additional unused datasets)
 def make_scaling_ds():
     if not os.path.exists(f"./data"):
         os.makedirs(f"./data", exist_ok=True)
@@ -75,6 +76,7 @@ def make_scaling_ds():
             strx = strx[:-1] + "\n"
             f.write(strx)
 
+# makes Large
 def make_large_ds():
     if not os.path.exists(f"./data"):
         os.makedirs(f"./data", exist_ok=True)
@@ -92,6 +94,7 @@ def make_large_ds():
             strx = strx[:-1] + "\n"
             f.write(strx)
 
+# makes VeryLarge-2
 def make_verylarge_ds():
     if not os.path.exists(f"./data"):
         os.makedirs(f"./data", exist_ok=True)
@@ -109,6 +112,7 @@ def make_verylarge_ds():
             strx = strx[:-1] + "\n"
             f.write(strx)
 
+# makes VeryLarge-3
 def make_verylargethree_ds():
     if not os.path.exists(f"./data"):
         os.makedirs(f"./data", exist_ok=True)
@@ -126,6 +130,7 @@ def make_verylargethree_ds():
             strx = strx[:-1] + "\n"
             f.write(strx)
 
+# makes all DENSIRED datasets
 if __name__ == "__main__":
     make_densired_ds()
     make_scaling_ds()
