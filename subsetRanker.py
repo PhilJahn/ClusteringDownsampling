@@ -63,7 +63,7 @@ def rank_subsets(alg, supervision):
 if __name__ == '__main__':
     all_rankings = []
     part_rankings = []
-    for alg in ["dbscan", "kmeans", "em", "spectral", "agglomerative"]:#, "hdbscan", "spectral", "dpc", "agglomerative", "em"]:
+    for alg in ["dbscan", "kmeans", "em"]:#, "spectral", "agglomerative"]:#, "hdbscan", "spectral", "dpc", "agglomerative", "em"]:
         ranks = rank_subsets(alg, "True")
         ranking = np.sum(list(ranks.values()), axis=0)/len(list(ranks.keys()))
         print(ranking)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         part_rankings.append(ranking)
     print("Supervised", np.sum(part_rankings, axis=0) / len(part_rankings))
     part_rankings = []
-    for alg in ["dbscan", "kmeans", "em", "spectral", "agglomerative"]:#"hdbscan", "spectral", "dpc", "agglomerative", "em"]:
+    for alg in ["dbscan", "kmeans", "em"]:#, "spectral", "agglomerative"]:#"hdbscan", "spectral", "dpc", "agglomerative", "em"]:
         ranks = rank_subsets(alg, "False")
         ranking = np.sum(list(ranks.values()), axis=0)/len(list(ranks.keys()))
         print(ranking)

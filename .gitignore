@@ -2,3 +2,5 @@
 /venv/
 # backport of Clustpy to 3.9, as pyrfr only works up to 3.9 on Windows and most recent version of Clustpy is 3.10
 /clustpy/
+/grid_dicts_old
+/grid_evals_old
