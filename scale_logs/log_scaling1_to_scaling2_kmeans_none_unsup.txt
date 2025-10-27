@@ -1,0 +1,5 @@
+{'n_clusters': 'none', 'init': 'none'}, diff: 0.078, std: 0.027, tested: 200, up: 0.351, reg: 0.273, up+: 0.985, reg+: 0.005, same: 0.010, score: 0.105, median_score: 0.079
+{'n_clusters': 'linear_int', 'init': 'none'}, diff: 0.064, std: 0.239, tested: 100, up: 0.367, reg: 0.329, up+: 0.480, reg+: 0.520, same: 0.000, score: 0.303, median_score: 0.022
+{'n_clusters': 'root_int', 'init': 'none'}, diff: 0.049, std: 0.032, tested: 142, up: 0.342, reg: 0.300, up+: 0.915, reg+: 0.070, same: 0.014, score: 0.081, median_score: 0.044
+{'n_clusters': 'square_int', 'init': 'none'}, diff: 0.127, std: 0.287, tested: 50, up: 0.362, reg: 0.368, up+: 0.040, reg+: 0.960, same: 0.000, score: 0.414, median_score: 0.065
+{'n_clusters': 'root_int', 'init': 'none'} $0.049 \pm 0.032$ 0.081

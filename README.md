@@ -145,9 +145,9 @@ To extract information on the scaling behavior, we use ```scaling_eval.py```
 | --method           | Clustering method (Spectral Clustering using ```affinity```:```rbf``` is ```spectral_gamma``` and using ```affinity```:```nearest_neighbors``` is ```spectral_nn```, Agglomerative Clustering using ```connectivity```:```None``` is ```agglomerative_unstructured``` and using ```connectivity```:```kneighbors_graph``` is ```agglomerative```)|
 | --submethod           | Clustering submethod (typically ```none```, but supports each of the ```linkage``` types of Agglomerative Clustering (```ward```, ```average```, ```single```, ```complete```)|
 
-* The scaling behavior will be returned on the command line, but we store all reports in ```/scaling_evals/```.
 * ```/grid_dicts/``` contains all extraction dictionaries. The naming scheme is  ```dataset_method_metric.npy```.
-
+* ```/scale_logs/``` contains all extracted scaling bahviors. The naming scheme is ```reg_to_up_method_submethod_metric.txt```.
+* 
 ## Configuration Evaluation
 
 To evaluate the obtained hyperparameter configurations, they are rerun to get their performance on (potentially) different dataset sizes.

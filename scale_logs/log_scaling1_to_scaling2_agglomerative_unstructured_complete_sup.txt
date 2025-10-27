@@ -1,0 +1,5 @@
+{'n_clusters': 'none', 'connectivity': 'none', 'n_neighbors': 'none', 'linkage': 'none'}, diff: 0.034, std: 0.018, tested: 100, up: 0.907, reg: 0.873, up+: 0.990, reg+: 0.000, same: 0.010, score: 0.053, median_score: 0.035
+{'n_clusters': 'linear_int', 'connectivity': 'none', 'n_neighbors': 'none', 'linkage': 'none'}, diff: 0.215, std: 0.108, tested: 50, up: 0.915, reg: 1.039, up+: 0.120, reg+: 0.880, same: 0.000, score: 0.323, median_score: 0.202
+{'n_clusters': 'root_int', 'connectivity': 'none', 'n_neighbors': 'none', 'linkage': 'none'}, diff: 0.090, std: 0.054, tested: 71, up: 0.904, reg: 0.961, up+: 0.127, reg+: 0.859, same: 0.014, score: 0.143, median_score: 0.084
+{'n_clusters': 'square_int', 'connectivity': 'none', 'n_neighbors': 'none', 'linkage': 'none'}, diff: 0.410, std: 0.151, tested: 25, up: 0.920, reg: 1.114, up+: 0.240, reg+: 0.760, same: 0.000, score: 0.561, median_score: 0.416
+{'n_clusters': 'none', 'connectivity': 'none', 'n_neighbors': 'none', 'linkage': 'none'} $0.034 \pm 0.018$ 0.053

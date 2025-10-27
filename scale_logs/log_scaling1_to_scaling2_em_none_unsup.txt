@@ -1,0 +1,5 @@
+{'n_components': 'none', 'init_params': 'none', 'covariance_type': 'none'}, diff: 0.084, std: 0.048, tested: 1600, up: 0.232, reg: 0.177, up+: 0.874, reg+: 0.116, same: 0.010, score: 0.132, median_score: 0.080
+{'n_components': 'linear_int', 'init_params': 'none', 'covariance_type': 'none'}, diff: 0.072, std: 0.210, tested: 800, up: 0.246, reg: 0.217, up+: 0.491, reg+: 0.509, same: 0.000, score: 0.283, median_score: 0.033
+{'n_components': 'root_int', 'init_params': 'none', 'covariance_type': 'none'}, diff: 0.059, std: 0.051, tested: 1136, up: 0.225, reg: 0.197, up+: 0.788, reg+: 0.198, same: 0.014, score: 0.110, median_score: 0.049
+{'n_components': 'square_int', 'init_params': 'none', 'covariance_type': 'none'}, diff: 0.138, std: 0.264, tested: 400, up: 0.243, reg: 0.256, up+: 0.115, reg+: 0.885, same: 0.000, score: 0.402, median_score: 0.079
+{'n_components': 'root_int', 'init_params': 'none', 'covariance_type': 'none'} $0.059 \pm 0.051$ 0.110

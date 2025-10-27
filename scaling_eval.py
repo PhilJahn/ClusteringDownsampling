@@ -484,7 +484,7 @@ if __name__ == '__main__':
 
 
 
-        eval_log_file.write(f"{scaling}, diff: {np.mean(diff):.3f}, std: {np.std(diff):.3f}, tested: {len(diff)}")
+        eval_log_file.write(f"{scaling}, diff: {np.mean(diff):.3f}, std: {np.std(diff):.3f}, tested: {len(diff)}, ")
         eval_log_file.write(f"up: {np.mean(up_performances):.3f}, reg: {np.mean(reg_performances):.3f}, ")
         eval_log_file.write(f"up+: {up_ctr/len(diff):.3f}, reg+: {reg_ctr / len(diff):.3f}, same: {same_ctr / len(diff):.3f}, ")
         eval_log_file.write(f"score: {np.mean(diff) + np.std(diff):.3f}, median_score: {median_score:.3f}\n")

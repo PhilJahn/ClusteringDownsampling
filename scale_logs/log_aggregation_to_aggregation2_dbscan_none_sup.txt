@@ -1,0 +1,15 @@
+{'eps': 'none', 'min_samples': 'none'}, diff: 0.125, std: 0.387, tested: 10000, up: 0.161, reg: 0.149, up+: 0.167, reg+: 0.082, same: 0.752, score: 0.512, median_score: 0.000
+{'eps': 'none', 'min_samples': 'linear_int'}, diff: 0.001, std: 0.005, tested: 5000, up: 0.161, reg: 0.162, up+: 0.147, reg+: 0.052, same: 0.801, score: 0.006, median_score: 0.000
+{'eps': 'linear_float', 'min_samples': 'none'}, diff: 0.455, std: 0.694, tested: 5100, up: 0.136, reg: 0.292, up+: 0.224, reg+: 0.263, same: 0.514, score: 1.150, median_score: 0.000
+{'eps': 'linear_float', 'min_samples': 'linear_int'}, diff: 0.428, std: 0.697, tested: 2550, up: 0.136, reg: 0.317, up+: 0.164, reg+: 0.226, same: 0.609, score: 1.125, median_score: 0.000
+{'eps': 'none', 'min_samples': 'square_int'}, diff: 0.065, std: 0.277, tested: 2500, up: 0.160, reg: 0.194, up+: 0.146, reg+: 0.054, same: 0.800, score: 0.342, median_score: 0.000
+{'eps': 'square_float', 'min_samples': 'none'}, diff: 0.764, std: 0.769, tested: 2600, up: 0.085, reg: 0.531, up+: 0.417, reg+: 0.447, same: 0.136, score: 1.534, median_score: 0.695
+{'eps': 'square_float', 'min_samples': 'square_int'}, diff: 0.959, std: 0.787, tested: 650, up: 0.084, reg: 0.746, up+: 0.189, reg+: 0.542, same: 0.269, score: 1.746, median_score: 1.550
+{'eps': 'none', 'min_samples': 'root_int'}, diff: 0.056, std: 0.222, tested: 7100, up: 0.161, reg: 0.154, up+: 0.159, reg+: 0.060, same: 0.781, score: 0.278, median_score: 0.000
+{'eps': 'root_float', 'min_samples': 'none'}, diff: 0.308, std: 0.603, tested: 7100, up: 0.150, reg: 0.210, up+: 0.177, reg+: 0.172, same: 0.651, score: 0.911, median_score: 0.000
+{'eps': 'root_float', 'min_samples': 'root_int'}, diff: 0.262, std: 0.571, tested: 5041, up: 0.150, reg: 0.217, up+: 0.163, reg+: 0.146, same: 0.691, score: 0.833, median_score: 0.000
+{'eps': 'linear_float', 'min_samples': 'root_int'}, diff: 0.443, std: 0.698, tested: 3621, up: 0.136, reg: 0.301, up+: 0.189, reg+: 0.241, same: 0.570, score: 1.141, median_score: 0.000
+{'eps': 'square_float', 'min_samples': 'root_int'}, diff: 0.819, std: 0.782, tested: 1846, up: 0.085, reg: 0.588, up+: 0.342, reg+: 0.482, same: 0.176, score: 1.601, median_score: 0.851
+{'eps': 'linear_float', 'min_samples': 'square_int'}, diff: 0.373, std: 0.649, tested: 1275, up: 0.135, reg: 0.380, up+: 0.135, reg+: 0.238, same: 0.627, score: 1.021, median_score: 0.000
+{'eps': 'root_float', 'min_samples': 'square_int'}, diff: 0.131, std: 0.402, tested: 1775, up: 0.149, reg: 0.273, up+: 0.110, reg+: 0.157, same: 0.732, score: 0.533, median_score: 0.000
+{'eps': 'none', 'min_samples': 'linear_int'} $0.001 \pm 0.005$ 0.006
