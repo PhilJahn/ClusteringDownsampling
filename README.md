@@ -1,4 +1,4 @@
-This repository contains the code for a paper submitted to ICDE 2026.  
+This repository is the official repository for the paper submission "AutoML in Clustering: Is Sampling Useful?" by Philipp Jahn, Gabriel Marques Tavares, Anna Beer, Udo Schlegel, and Thomas Seidl for ICDE 2026.  
 
 ## Requirements
 
