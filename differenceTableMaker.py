@@ -40,8 +40,8 @@ def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
     table += f". Scaled by 100, negative/red means {scaling_name[scaling2]} has larger values, positive/blue means {scaling_name[scaling1]} has larger values"
     table += ".}\n"
 
-    table += "\\begin{tabular}{|l|c|c|c|c|c|}\\hline\n"
-    table += "Dataset & 1\% & 10\% & 25\%& 50\% & 75\%\\\\\\hline\n"
+    table += "\\begin{tabular}{|l|c|c|c|c|}\\hline\n"
+    table += "Dataset & 1\% & 10\% & 25\%& 50\%\\\\\\hline\n"
 
     for dataset in datasets:
         table += datasets_name[dataset]
@@ -49,7 +49,7 @@ def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
             #table += f"- {sampling_name[sampling]}"
             prefix = f"eval_logs/{dataset}_{alg}/log_{dataset}_{alg}_{supervision_string[supervision]}_from_"
             postfix = f"_on_kcentroid_1.0_3600"
-            for i in ["0.01", "0.1", "0.25", "0.5", "0.75"]:
+            for i in ["0.01", "0.1", "0.25", "0.5"]:#, "0.75"]:
                 table += "& "
                 path_scale_1 = f"{prefix}{sampling}_{i}{postfix}_{scaling1}.txt"
                 path_scale_2 = f"{prefix}{sampling}_{i}{postfix}_{scaling2}.txt"
@@ -97,22 +97,22 @@ def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
                         if score1 <= score2:
                             strength = abs((score1-score2) / score2)
                             table += "\\cellcolor{red!"
-                            table += f"{min(75, strength * 75):.0f}"
+                            table += f"{min(50, strength * 50):.0f}"
                             table += "}"
                         else:
                             strength = abs((score1 - score2) / score2)
                             table += "\\cellcolor{blue!"
-                            table += f"{min(75, strength * 75):.0f}"
+                            table += f"{min(50, strength * 50):.0f}"
                             table += "}"
                         table += f"{score1-score2:.0f} ({subnum_str})"
                     elif score1 is None and score2 is None:
                         table += "-"
                     elif score1 is None:
-                        #table += "\\cellcolor{red!75}"
+                        #table += "\\cellcolor{red!50}"
                         #table += f"{-score2:.0f} ({subnum_str})"
                         table += "-"
                     else:
-                        #table += "\\cellcolor{blue!75}"
+                        #table += "\\cellcolor{blue!50}"
                         #table += f"{score1:.0f} ({subnum_str})"
                         table += "-"
                 else:
@@ -127,7 +127,7 @@ def make_diff_table(alg, supervision, samplings, scaling1, scaling2):
     print(table)
 
 if __name__ == '__main__':
-    #make_diff_table("kmeans", "False", ["protras"], "root_unsup", "sample_mult")
+    make_diff_table("kmeans", "False", ["protras"], "root_unsup", "sample_mult")
     #make_diff_table("em", "False", ["protras"], "root_unsup", "sample_mult")
     #make_diff_table("spectral", "False", ["protras"], "root_unsup", "sample_mult")
 
@@ -136,10 +136,10 @@ if __name__ == '__main__':
     #make_diff_table("agglomerative", "True", ["random"], "none", "sample_mult")
     #make_diff_table("agglomerative", "False", ["protras"], "none", "sample_mult")
 
-    #make_diff_table("dbscan", "True", ["random"], "none", "sample_mult")
+    make_diff_table("dbscan", "True", ["random"], "none", "sample_mult")
     #make_diff_table("dbscan", "False", ["protras"], "none", "sample_mult")
 
     #make_diff_table("spectral", "True", ["random"], "none", "sample_mult")
     #make_diff_table("spectral", "False", ["protras"], "root_unsup", "sample_mult")
 
-    make_diff_table("em", "False", ["protras"], "root_unsup", "sample_mult")
+    #make_diff_table("em", "False", ["protras"], "root_unsup", "sample_mult")

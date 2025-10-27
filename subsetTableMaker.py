@@ -16,7 +16,7 @@ warnings.warn("runtimewarning", RuntimeWarning)
 def make_sub_table():
     dss = ["aggregation", "complex9", "densired", "densired_noise", "wine_quality", "isolet", "har", "pendigits",
            "magic_gamma", "letter"]
-    #dss = ["complex9", "densired", "isolet", "pendigits"]
+    dss = ["complex9", "densired", "isolet", "pendigits"]
     samplings = ["random", "lwc", "kcentroid", "protras", "dendis", "dides"]
     datasets_name = {"complex9": "Complex-9", "aggregation": "Aggregation", "har": "HAR",
                      "isolet": "Isolet", "densired": "DENSIRED", "densired_noise": "DENSIRED$_{N}$",
@@ -119,16 +119,16 @@ def make_sub_table():
                 #     table_imb += f"&{imb_mean:.1f} $\pm$ {imb_std:.0f}"
                 # else:
                 if bop_mean == 0:
-                    bopcolor = "\\cellcolor{blue!90}"
-                elif math.log(bop_mean*10) > 0:
-                    strength = round(math.log(bop_mean*10)*15)
-                    bopcolor = "\\cellcolor{red!" + str(strength) + "}"
+                    bopcolor = "\\cellcolor{blue!50}"
+                #elif math.log(bop_mean*10) > 0:
+                #    strength = min(60,round(math.log(bop_mean*10)*15))
+                #    bopcolor = "\\cellcolor{red!" + str(strength) + "}"
                 else:
-                    strength = round(math.log(bop_mean*10)*-15)
-                    bopcolor = "\\cellcolor{blue!" + str(strength) + "}"
+                    strength = min(60, round(bop_mean*100))
+                    bopcolor = "\\cellcolor{red!" + str(strength) + "}"
                 table_bop += f"&{bopcolor}{bop_mean*100:.2f}"
 
-                strength = round(min(75, nn_dist_mean*15))
+                strength = round(min(60, nn_dist_mean*15))
                 nndistcolor = "\\cellcolor{red!" + str(strength) + "}"
                 table_nn_dist += f"&{nndistcolor}{nn_dist_mean:.3f}"
 
@@ -141,7 +141,7 @@ def make_sub_table():
 
                 table_nn_acc += f"&{nn_acc_color}{nn_acc_mean*100:.2f}"
 
-                strength = min(75,abs(round((unsup_mean-unsup_score[ds])/(unsup_score[ds]) * 50)))
+                strength = min(60,abs(round((unsup_mean-unsup_score[ds])/(unsup_score[ds]) * 45)))
                 unsup_color = "\\cellcolor{red!" + str(strength) + "}"
                 if size < 1:
                     table_unsup += f"&{unsup_color}{abs(unsup_mean-unsup_score[ds]):.0f}"
@@ -178,9 +178,9 @@ def make_sub_table():
     table_unsup += table_end_pre + "subset_unsup" + table_end_post
     table_imb += table_end_pre + "subset_imb" + table_end_post
 
-    #print(table_bop)
+    print(table_bop)
     #print(table_nn_acc)
-    #print(table_nn_dist)
+    print(table_nn_dist)
     print(table_unsup)
     #print(table_imb)
 
